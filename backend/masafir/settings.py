@@ -2,7 +2,6 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
-import cloudinary
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
