@@ -3,25 +3,28 @@ from datetime import timedelta
 import os
 import dj_database_url
 from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
+
 # =========================
 # SECURITY
 # =========================
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-dev-key"
-)
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
-).split(",")
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        "ALLOWED_HOSTS",
+        "localhost,127.0.0.1"
+    ).split(",")
+    if host.strip()
+]
 
-SITE_URL = os.environ.get(
+SITE_URL = os.getenv(
     "SITE_URL",
     "http://localhost:8000"
 )
@@ -61,10 +64,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 ]
 
-# =========================
-# CUSTOM USER
-# =========================
-
 AUTH_USER_MODEL = "users.User"
 
 # =========================
@@ -75,12 +74,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -108,11 +109,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'masafir.wsgi.application'
 
 # =========================
-# DATABASE
+# DATABASE (FIXED - IMPORTANT)
 # =========================
 
 DATABASES = {
     "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL", ""),
         conn_max_age=600
     )
 }
@@ -141,11 +143,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # =========================
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # =========================
@@ -153,7 +152,6 @@ USE_TZ = True
 # =========================
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = (
@@ -168,13 +166,13 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # =========================
-# DJANGO SITES
+# SITES
 # =========================
 
 SITE_ID = 1
 
 # =========================
-# AUTHENTICATION
+# AUTH
 # =========================
 
 AUTHENTICATION_BACKENDS = [
@@ -189,9 +187,7 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online'
-        },
+        'AUTH_PARAMS': {'access_type': 'online'},
         'OAUTH_PKCE_ENABLED': True,
     }
 }
@@ -231,58 +227,63 @@ SIMPLE_JWT = {
 }
 
 # =========================
-# CORS
+# CORS (FIXED)
 # =========================
 
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:5173"
-).split(",")
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "http://localhost:5173"
+    ).split(",")
+    if origin.strip()
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
 # =========================
-# CSRF
+# CSRF (FIXED)
 # =========================
 
-CSRF_TRUSTED_ORIGINS = os.environ.get(
-    "CSRF_TRUSTED_ORIGINS",
-    "http://localhost:5173"
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CSRF_TRUSTED_ORIGINS",
+        "http://localhost:5173"
+    ).split(",")
+    if origin.strip()
+]
 
 # =========================
 # EMAIL
 # =========================
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 
-DEFAULT_FROM_EMAIL = os.environ.get(
+DEFAULT_FROM_EMAIL = os.getenv(
     "DEFAULT_FROM_EMAIL",
     "Masafir <masafirofficial@gmail.com>"
 )
 
-ADMIN_EMAIL = os.environ.get(
+ADMIN_EMAIL = os.getenv(
     "ADMIN_EMAIL",
     "masafirofficial@gmail.com"
 )
 
 # =========================
-# SECURITY SETTINGS
+# SECURITY (PRODUCTION)
 # =========================
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = False  # ✅ Railway HTTPS khud handle karta hai
-
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
