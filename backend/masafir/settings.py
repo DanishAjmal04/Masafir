@@ -2,7 +2,9 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
+import cloudinary
 from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -10,22 +12,15 @@ load_dotenv(BASE_DIR / ".env")
 # SECURITY
 # =========================
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-dev-key"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-key")
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
+    "ALLOWED_HOSTS", "localhost,127.0.0.1"
 ).split(",")
 
-SITE_URL = os.environ.get(
-    "SITE_URL",
-    "http://localhost:8000"
-)
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
 
 # =========================
 # APPLICATIONS
@@ -60,11 +55,11 @@ INSTALLED_APPS = [
 
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-]
 
-# =========================
-# CUSTOM USER
-# =========================
+    # Cloudinary
+    'cloudinary',
+    'cloudinary_storage',
+]
 
 AUTH_USER_MODEL = "users.User"
 
@@ -124,18 +119,10 @@ DATABASES = {
 # =========================
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # =========================
@@ -151,21 +138,51 @@ USE_TZ = True
 # STATIC FILES
 # =========================
 
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = (
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 # =========================
 # MEDIA FILES
 # =========================
 
-MEDIA_URL = "/media/"
+MEDIA_URL  = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # =========================
-# DJANGO SITES
+# CLOUDINARY
+# =========================
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY':    os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'MAX_FILE_SIZE': 20 * 1024 * 1024,  # 20MB
+}
+
+cloudinary.config(
+    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key    = os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+)
+
+# =========================
+# UPLOAD SIZE LIMITS
+# =========================
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+
+# =========================
+# SITES
 # =========================
 
 SITE_ID = 1
@@ -186,9 +203,7 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online'
-        },
+        'AUTH_PARAMS': {'access_type': 'online'},
         'OAUTH_PKCE_ENABLED': True,
     }
 }
@@ -198,10 +213,10 @@ SOCIALACCOUNT_PROVIDERS = {
 # =========================
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_USERNAME_REQUIRED         = False
+ACCOUNT_EMAIL_REQUIRED            = True
+ACCOUNT_AUTHENTICATION_METHOD     = 'email'
+ACCOUNT_EMAIL_VERIFICATION        = 'none'
 
 # =========================
 # REST FRAMEWORK
@@ -221,9 +236,9 @@ REST_FRAMEWORK = {
 # =========================
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME":  timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    "ROTATE_REFRESH_TOKENS": True,
+    "ROTATE_REFRESH_TOKENS":  True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
@@ -232,8 +247,7 @@ SIMPLE_JWT = {
 # =========================
 
 CORS_ALLOWED_ORIGINS = os.environ.get(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:5173"
+    "CORS_ALLOWED_ORIGINS", "http://localhost:5173"
 ).split(",")
 
 CORS_ALLOW_CREDENTIALS = True
@@ -243,42 +257,36 @@ CORS_ALLOW_CREDENTIALS = True
 # =========================
 
 CSRF_TRUSTED_ORIGINS = os.environ.get(
-    "CSRF_TRUSTED_ORIGINS",
-    "http://localhost:5173"
+    "CSRF_TRUSTED_ORIGINS", "http://localhost:5173"
 ).split(",")
 
 # =========================
 # EMAIL
 # =========================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_BACKEND      = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST         = 'smtp.gmail.com'
+EMAIL_PORT         = 587
+EMAIL_USE_TLS      = True
+EMAIL_HOST_USER    = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = os.environ.get(
-    "DEFAULT_FROM_EMAIL",
-    "Masafir <masafirofficial@gmail.com>"
+    "DEFAULT_FROM_EMAIL", "Masafir <masafirofficial@gmail.com>"
 )
 
-ADMIN_EMAIL = os.environ.get(
-    "ADMIN_EMAIL",
-    "masafirofficial@gmail.com"
-)
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "masafirofficial@gmail.com")
 
 # =========================
-# SECURITY SETTINGS
+# SECURITY (PRODUCTION)
 # =========================
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_SSL_REDIRECT          = False
+    SESSION_COOKIE_SECURE        = True
+    CSRF_COOKIE_SECURE           = True
+    SECURE_BROWSER_XSS_FILTER    = True
+    SECURE_CONTENT_TYPE_NOSNIFF  = True
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
