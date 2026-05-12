@@ -166,11 +166,17 @@ USE_TZ = True
 # STATIC FILES
 # =========================
 
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_AUTOREFRESH = True
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",  # Compressed — Manifest nahi
+    },
+}
 
 # =========================
 # MEDIA FILES
