@@ -54,10 +54,6 @@ INSTALLED_APPS = [
 
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-
-    # Cloudinary
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -140,14 +136,9 @@ USE_TZ = True
 STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
+STATICFILES_STORAGE = (
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 
 # =========================
 # MEDIA FILES
@@ -160,25 +151,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # CLOUDINARY
 # =========================
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY':    os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-    'MAX_FILE_SIZE': 20 * 1024 * 1024,  # 20MB
-}
 
-cloudinary.config(
-    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    api_key    = os.environ.get('CLOUDINARY_API_KEY'),
-    api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
-)
 
 # =========================
 # UPLOAD SIZE LIMITS
 # =========================
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+
 
 # =========================
 # SITES
