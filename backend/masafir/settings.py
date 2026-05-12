@@ -74,7 +74,12 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
     'API_KEY':    os.getenv('CLOUDINARY_API_KEY'),
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'MAX_FILE_SIZE': 20 * 1024 * 1024,  # ← 20MB kar do
+
 }
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024   # 20MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024   # 20MB
 
 cloudinary.config(
     cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
