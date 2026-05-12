@@ -62,10 +62,25 @@ INSTALLED_APPS = [
 
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
+    'cloudinary',               # ← add
+    'cloudinary_storage',
 ]
 
 AUTH_USER_MODEL = "users.User"
 
+import cloudinary
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY':    os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key    = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+)
 # =========================
 # MIDDLEWARE
 # =========================
@@ -171,10 +186,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",  # ← yeh
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",  # Compressed — Manifest nahi
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
