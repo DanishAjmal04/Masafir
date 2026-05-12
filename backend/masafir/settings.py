@@ -73,20 +73,14 @@ AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # WhiteNoise
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
-    # CORS
     'corsheaders.middleware.CorsMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -221,7 +215,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -286,7 +279,7 @@ ADMIN_EMAIL = os.environ.get(
 # =========================
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False  # ✅ Railway HTTPS khud handle karta hai
 
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
