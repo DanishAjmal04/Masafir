@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ArrowLeft, ArrowRight, Minus, Plus, Share2, ChevronDown } from "lucide-react";
 import { addToCart } from "../store/cartSlice.js";
-import { useProduct } from "../hooks/useProduct";
+import { useProduct } from "../hooks/useProduct";        // ✅ fix
 import { reviewService } from "../services/reviewService";
 
 const formatPKR = (amount) =>
@@ -26,22 +26,26 @@ function useIsMobile(bp = 768) {
 }
 
 export default function ProductPage() {
-  const { slug } = useParams();
-  const dispatch = useDispatch();
-  const isMobile = useIsMobile();
+  const { slug }   = useParams();
+  const dispatch   = useDispatch();
+  const isMobile   = useIsMobile();
   const { product, loading, error } = useProduct(slug);
 
-  const [activeImage, setActiveImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [activeImage,   setActiveImage]   = useState(0);
+  const [selectedSize,  setSelectedSize]  = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
-  const [sizeError, setSizeError] = useState(false);
+  const [quantity,      setQuantity]      = useState(1);
+  const [added,         setAdded]         = useState(false);
+  const [sizeError,     setSizeError]     = useState(false);
   const [openAccordion, setOpenAccordion] = useState(null);
 
-  const sizes = [...new Set(product?.variants?.map((v) => v.size) || [])];
+  const sizes  = [...new Set(product?.variants?.map((v) => v.size)                || [])];
   const colors = [...new Set(product?.variants?.map((v) => v.color).filter(Boolean) || [])];
-  const images = product?.images?.map((img) => (typeof img === "string" ? img : img.image)) || [];
+
+  // ✅ fix — Django images array of objects hai, strings nahi
+  const images = product?.images?.map((img) =>
+    typeof img === "string" ? img : img.image
+  ).filter(Boolean) || [];
 
   useEffect(() => {
     if (colors.length) setSelectedColor(colors[0]);
@@ -56,12 +60,12 @@ export default function ProductPage() {
       return;
     }
     dispatch(addToCart({
-      id: product.id,
-      name: product.name,
-      price: parseFloat(product.price),
-      image: images[0] || "",
-      size: selectedSize,
-      color: selectedColor || "",
+      id:       product.id,
+      name:     product.name,
+      price:    parseFloat(product.price),
+      image:    images[0] || "",
+      size:     selectedSize,
+      color:    selectedColor || "",
       quantity,
     }));
     setAdded(true);
@@ -79,16 +83,20 @@ export default function ProductPage() {
   if (error || !product) {
     return (
       <div style={{ minHeight: "100vh", backgroundColor: "#faf9f6", paddingTop: "96px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "16px" }}>
-        <p style={{ fontSize: "13px", color: "#ef4444", fontWeight: 300 }}>{typeof error === "string" ? error : "Product not found."}</p>
+        <p style={{ fontSize: "13px", color: "#ef4444", fontWeight: 300 }}>
+          {typeof error === "string" ? error : "Product not found."}
+        </p>
         <Link to="/shop" style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#1a1a1a" }}>← Back to Shop</Link>
       </div>
     );
   }
 
-  const avgRating = product.avg_rating || "0.0";
-  const reviewCount = product.review_count || 0;
-  const totalImages = images.length || 1;
-  const categoryName = typeof product.category === "object" ? product.category?.name : product.category || "";
+  const avgRating    = product.avg_rating    || "0.0";
+  const reviewCount  = product.review_count  || 0;
+  const totalImages  = images.length         || 1;
+  const categoryName = typeof product.category === "object"
+    ? product.category?.name
+    : product.category || "";
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#faf9f6", paddingTop: isMobile ? "72px" : "96px", paddingBottom: isMobile ? "48px" : "96px" }}>
@@ -96,7 +104,7 @@ export default function ProductPage() {
 
         {/* Breadcrumb */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: isMobile ? "20px" : "40px", fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#4d4d4d", fontWeight: 300, flexWrap: "wrap" }}>
-          <Link to="/" style={{ color: "#4d4d4d", textDecoration: "none" }}>Home</Link>
+          <Link to="/"     style={{ color: "#4d4d4d", textDecoration: "none" }}>Home</Link>
           <span>/</span>
           <Link to="/shop" style={{ color: "#4d4d4d", textDecoration: "none" }}>Shop</Link>
           {categoryName && (
@@ -112,9 +120,8 @@ export default function ProductPage() {
         {/* Main grid */}
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? "24px" : "64px", alignItems: "start" }}>
 
-          {/* ── IMAGE GALLERY ── */}
+          {/* IMAGE GALLERY */}
           {isMobile ? (
-            /* Mobile: main image with dot indicators */
             <div style={{ position: "relative" }}>
               <div style={{ aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#ede8df", borderRadius: RADIUS.lg, position: "relative" }}>
                 <img src={images[activeImage] || ""} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -125,44 +132,32 @@ export default function ProductPage() {
                 )}
                 {images.length > 1 && (
                   <>
-                    <button
-                      onClick={() => setActiveImage((p) => (p - 1 + totalImages) % totalImages)}
-                      style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", border: "none", backgroundColor: "rgba(255,255,255,0.85)", cursor: "pointer", width: "36px", height: "36px", borderRadius: RADIUS.pill, display: "flex", alignItems: "center", justifyContent: "center", color: "#1a1a1a" }}
-                    >
+                    <button onClick={() => setActiveImage((p) => (p - 1 + totalImages) % totalImages)}
+                      style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", border: "none", backgroundColor: "rgba(255,255,255,0.85)", cursor: "pointer", width: "36px", height: "36px", borderRadius: RADIUS.pill, display: "flex", alignItems: "center", justifyContent: "center", color: "#1a1a1a" }}>
                       <ArrowLeft size={16} />
                     </button>
-                    <button
-                      onClick={() => setActiveImage((p) => (p + 1) % totalImages)}
-                      style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", border: "none", backgroundColor: "rgba(255,255,255,0.85)", cursor: "pointer", width: "36px", height: "36px", borderRadius: RADIUS.pill, display: "flex", alignItems: "center", justifyContent: "center", color: "#1a1a1a" }}
-                    >
+                    <button onClick={() => setActiveImage((p) => (p + 1) % totalImages)}
+                      style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", border: "none", backgroundColor: "rgba(255,255,255,0.85)", cursor: "pointer", width: "36px", height: "36px", borderRadius: RADIUS.pill, display: "flex", alignItems: "center", justifyContent: "center", color: "#1a1a1a" }}>
                       <ArrowRight size={16} />
                     </button>
                   </>
                 )}
               </div>
-              {/* Dot indicators */}
               {images.length > 1 && (
                 <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "12px" }}>
                   {images.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      style={{ width: i === activeImage ? "20px" : "6px", height: "6px", borderRadius: RADIUS.pill, backgroundColor: i === activeImage ? "#1a1a1a" : "#ccc", border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }}
-                    />
+                    <button key={i} onClick={() => setActiveImage(i)}
+                      style={{ width: i === activeImage ? "20px" : "6px", height: "6px", borderRadius: RADIUS.pill, backgroundColor: i === activeImage ? "#1a1a1a" : "#ccc", border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
                   ))}
                 </div>
               )}
             </div>
           ) : (
-            /* Desktop: thumbnail strip + main */
             <div style={{ display: "flex", gap: "16px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "72px", flexShrink: 0 }}>
                 {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    style={{ aspectRatio: "1", overflow: "hidden", border: i === activeImage ? "1px solid #1a1a1a" : "1px solid transparent", opacity: i === activeImage ? 1 : 0.5, cursor: "pointer", padding: 0, backgroundColor: "transparent", borderRadius: RADIUS.md }}
-                  >
+                  <button key={i} onClick={() => setActiveImage(i)}
+                    style={{ aspectRatio: "1", overflow: "hidden", border: i === activeImage ? "1px solid #1a1a1a" : "1px solid transparent", opacity: i === activeImage ? 1 : 0.5, cursor: "pointer", padding: 0, backgroundColor: "transparent", borderRadius: RADIUS.md }}>
                     <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </button>
                 ))}
@@ -178,16 +173,12 @@ export default function ProductPage() {
                 </div>
                 {images.length > 1 && (
                   <>
-                    <button
-                      onClick={() => setActiveImage((p) => (p - 1 + totalImages) % totalImages)}
-                      style={{ position: "absolute", left: "12px", top: "45%", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#faf9f6", width: "32px", height: "32px", borderRadius: RADIUS.pill, padding: 0, display: "flex", alignItems: "center", justifyContent: "center", filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.45))" }}
-                    >
+                    <button onClick={() => setActiveImage((p) => (p - 1 + totalImages) % totalImages)}
+                      style={{ position: "absolute", left: "12px", top: "45%", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#faf9f6", width: "32px", height: "32px", borderRadius: RADIUS.pill, padding: 0, display: "flex", alignItems: "center", justifyContent: "center", filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.45))" }}>
                       <ArrowLeft size={22} />
                     </button>
-                    <button
-                      onClick={() => setActiveImage((p) => (p + 1) % totalImages)}
-                      style={{ position: "absolute", right: "12px", top: "45%", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#faf9f6", width: "32px", height: "32px", borderRadius: RADIUS.pill, padding: 0, display: "flex", alignItems: "center", justifyContent: "center", filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.45))" }}
-                    >
+                    <button onClick={() => setActiveImage((p) => (p + 1) % totalImages)}
+                      style={{ position: "absolute", right: "12px", top: "45%", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#faf9f6", width: "32px", height: "32px", borderRadius: RADIUS.pill, padding: 0, display: "flex", alignItems: "center", justifyContent: "center", filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.45))" }}>
                       <ArrowRight size={22} />
                     </button>
                   </>
@@ -196,7 +187,7 @@ export default function ProductPage() {
             </div>
           )}
 
-          {/* ── PRODUCT INFO ── */}
+          {/* PRODUCT INFO */}
           <div>
             <p className="section-label" style={{ marginBottom: "10px" }}>{categoryName}</p>
             <h1 className="font-display" style={{ fontSize: isMobile ? "28px" : "40px", color: "#1a1a1a", fontWeight: 300, lineHeight: 1.15, marginBottom: "14px" }}>
@@ -229,11 +220,8 @@ export default function ProductPage() {
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   {colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      style={{ padding: "6px 14px", fontSize: "11px", letterSpacing: "0.08em", borderRadius: RADIUS.pill, border: `1px solid ${selectedColor === color ? "#1a1a1a" : "#e0d9ce"}`, backgroundColor: selectedColor === color ? "#1a1a1a" : "transparent", color: selectedColor === color ? "#faf9f6" : "#3a3a3a", cursor: "pointer", transition: "all 0.2s", fontFamily: "inherit" }}
-                    >
+                    <button key={color} onClick={() => setSelectedColor(color)}
+                      style={{ padding: "6px 14px", fontSize: "11px", letterSpacing: "0.08em", borderRadius: RADIUS.pill, border: `1px solid ${selectedColor === color ? "#1a1a1a" : "#e0d9ce"}`, backgroundColor: selectedColor === color ? "#1a1a1a" : "transparent", color: selectedColor === color ? "#faf9f6" : "#3a3a3a", cursor: "pointer", transition: "all 0.2s", fontFamily: "inherit" }}>
                       {color}
                     </button>
                   ))}
@@ -257,12 +245,10 @@ export default function ProductPage() {
                     const variant = product.variants?.find((v) => v.size === size && (!selectedColor || v.color === selectedColor));
                     const inStock = variant ? variant.in_stock : true;
                     return (
-                      <button
-                        key={size}
+                      <button key={size}
                         onClick={() => { if (inStock) { setSelectedSize(size); setSizeError(false); } }}
                         disabled={!inStock}
-                        style={{ width: "46px", height: "40px", borderRadius: RADIUS.md, fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300, border: `1px solid ${selectedSize === size ? "#1a1a1a" : "#e0d9ce"}`, backgroundColor: selectedSize === size ? "#1a1a1a" : "#faf9f6", color: selectedSize === size ? "#faf9f6" : !inStock ? "#c4b8a8" : "#3a3a3a", cursor: inStock ? "pointer" : "not-allowed", opacity: inStock ? 1 : 0.5, transition: "all 0.15s", textDecoration: !inStock ? "line-through" : "none" }}
-                      >
+                        style={{ width: "46px", height: "40px", borderRadius: RADIUS.md, fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300, border: `1px solid ${selectedSize === size ? "#1a1a1a" : "#e0d9ce"}`, backgroundColor: selectedSize === size ? "#1a1a1a" : "#faf9f6", color: selectedSize === size ? "#faf9f6" : !inStock ? "#c4b8a8" : "#3a3a3a", cursor: inStock ? "pointer" : "not-allowed", opacity: inStock ? 1 : 0.5, transition: "all 0.15s", textDecoration: !inStock ? "line-through" : "none" }}>
                         {size}
                       </button>
                     );
@@ -274,34 +260,25 @@ export default function ProductPage() {
             {/* Qty + Add to Cart */}
             <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
               <div style={{ display: "flex", alignItems: "center", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, overflow: "hidden", flexShrink: 0 }}>
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  disabled={quantity <= 1}
-                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d", opacity: quantity <= 1 ? 0.3 : 1 }}
-                >
+                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}
+                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d", opacity: quantity <= 1 ? 0.3 : 1 }}>
                   <Minus size={11} />
                 </button>
                 <span style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", color: "#1a1a1a", fontWeight: 300 }}>
                   {quantity}
                 </span>
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d" }}
-                >
+                <button onClick={() => setQuantity((q) => q + 1)}
+                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d" }}>
                   <Plus size={11} />
                 </button>
               </div>
 
-              <button
-                onClick={handleAddToCart}
-                style={{ flex: 1, padding: "12px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6" }}
-              >
+              <button onClick={handleAddToCart}
+                style={{ flex: 1, padding: "12px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6" }}>
                 {added ? "✦ Added to Cart" : "Add to Cart"}
               </button>
 
-              <button
-                style={{ width: "48px", height: "48px", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#4d4d4d", flexShrink: 0 }}
-              >
+              <button style={{ width: "48px", height: "48px", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#4d4d4d", flexShrink: 0 }}>
                 <Share2 size={14} />
               </button>
             </div>
@@ -313,26 +290,14 @@ export default function ProductPage() {
             {/* Accordions */}
             <div style={{ borderTop: "1px solid #ede8df" }}>
               {[
-                {
-                  key: "details",
-                  label: "Product Details",
-                  content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, lineHeight: 1.8 }}>{product.description}</p>,
-                },
-                {
-                  key: "shipping",
-                  label: "Shipping & Returns",
-                  content: (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                      <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Free standard shipping on orders over PKR 5,000. Delivery within 3–5 working days across Pakistan.</p>
-                      <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Returns accepted within 14 days of delivery. Items must be unworn and in original packaging.</p>
-                    </div>
-                  ),
-                },
-                {
-                  key: "care",
-                  label: "Care Instructions",
-                  content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Machine wash cold on a gentle cycle. Do not tumble dry. Line dry in shade. Iron on low heat if needed.</p>,
-                },
+                { key: "details",  label: "Product Details",   content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, lineHeight: 1.8 }}>{product.description}</p> },
+                { key: "shipping", label: "Shipping & Returns", content: (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Free standard shipping on orders over PKR 5,000. Delivery within 3–5 working days across Pakistan.</p>
+                    <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Returns accepted within 14 days of delivery. Items must be unworn and in original packaging.</p>
+                  </div>
+                )},
+                { key: "care",     label: "Care Instructions",  content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300 }}>Machine wash cold on a gentle cycle. Do not tumble dry. Line dry in shade. Iron on low heat if needed.</p> },
               ].map(({ key, label, content }) => (
                 <div key={key} style={{ borderBottom: "1px solid #ede8df" }}>
                   <button
@@ -356,13 +321,13 @@ export default function ProductPage() {
   );
 }
 
-/* ══════════════════════════════════════════
-   Related Products
-══════════════════════════════════════════ */
+/* ── Related Products ── */
 function RelatedProducts({ currentId, gender }) {
   const isMobile = useIsMobile();
-  const { products } = useSelector((s) => s.products);
-  const related = (products?.list || []).filter((p) => p.id !== currentId && p.gender === gender).slice(0, isMobile ? 2 : 4);
+  const list = useSelector((s) => s.products.list); // ✅ fix — products.list directly
+  const related = (list || [])
+    .filter((p) => p.id !== currentId && p.gender === gender)
+    .slice(0, isMobile ? 2 : 4);
 
   if (!related.length) return null;
 
@@ -390,19 +355,17 @@ function RelatedProducts({ currentId, gender }) {
   );
 }
 
-/* ══════════════════════════════════════════
-   Reviews Section
-══════════════════════════════════════════ */
+/* ── Reviews Section ── */
 function ReviewsSection({ productSlug, avgRating, reviewCount }) {
   const isMobile = useIsMobile();
   const { isAuthenticated } = useSelector((s) => s.auth);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [newRating, setNewRating] = useState(0);
+  const [reviews,     setReviews]     = useState([]);
+  const [loading,     setLoading]     = useState(true);
+  const [showForm,    setShowForm]    = useState(false);
+  const [newRating,   setNewRating]   = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [formData, setFormData] = useState({ body: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [formData,    setFormData]    = useState({ body: "" });
+  const [submitted,   setSubmitted]   = useState(false);
   const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
@@ -488,10 +451,7 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
           Write a Review
         </button>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          style={{ border: "1px solid #ede8df", padding: isMobile ? "20px 16px" : "28px", maxWidth: isMobile ? "100%" : "560px", borderRadius: RADIUS.lg }}
-        >
+        <form onSubmit={handleSubmit} style={{ border: "1px solid #ede8df", padding: isMobile ? "20px 16px" : "28px", maxWidth: isMobile ? "100%" : "560px", borderRadius: RADIUS.lg }}>
           <h3 className="font-display" style={{ fontSize: isMobile ? "20px" : "24px", color: "#1a1a1a", fontWeight: 300, marginBottom: "20px" }}>Write a Review</h3>
 
           {submitError && <p style={{ fontSize: "12px", color: "#ef4444", marginBottom: "14px", fontWeight: 300 }}>{submitError}</p>}
@@ -500,14 +460,11 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
             <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#4d4d4d", marginBottom: "10px", fontWeight: 300 }}>Your Rating</p>
             <div style={{ display: "flex", gap: "4px" }}>
               {[1,2,3,4,5].map((s) => (
-                <button
-                  type="button"
-                  key={s}
+                <button type="button" key={s}
                   onMouseEnter={() => setHoverRating(s)}
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setNewRating(s)}
-                  style={{ fontSize: "28px", color: s <= (hoverRating || newRating) ? "#b89870" : "#e0d9ce", border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "0 2px" }}
-                >
+                  style={{ fontSize: "28px", color: s <= (hoverRating || newRating) ? "#b89870" : "#e0d9ce", border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "0 2px" }}>
                   ★
                 </button>
               ))}
@@ -516,13 +473,8 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
 
           <div style={{ marginBottom: "20px" }}>
             <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#4d4d4d", marginBottom: "8px", fontWeight: 300 }}>Your Review</p>
-            <textarea
-              rows={4}
-              value={formData.body}
-              onChange={(e) => setFormData({ body: e.target.value })}
-              placeholder="Share your experience..."
-              style={{ width: "100%", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "#faf9f6", padding: "12px 16px", fontSize: "13px", color: "#1a1a1a", outline: "none", resize: "none", fontWeight: 300, boxSizing: "border-box" }}
-            />
+            <textarea rows={4} value={formData.body} onChange={(e) => setFormData({ body: e.target.value })} placeholder="Share your experience..."
+              style={{ width: "100%", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "#faf9f6", padding: "12px 16px", fontSize: "13px", color: "#1a1a1a", outline: "none", resize: "none", fontWeight: 300, boxSizing: "border-box" }} />
           </div>
 
           <div style={{ display: "flex", gap: "10px", flexDirection: isMobile ? "column" : "row" }}>
