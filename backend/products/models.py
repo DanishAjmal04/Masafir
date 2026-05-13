@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
+from PIL import Image as PilImage
+import io
+from django.core.files.base import ContentFile
 
 
 class Category(models.Model):
@@ -27,6 +30,22 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
+
+        # Category image compress karo
+        if self.image:
+            try:
+                img = PilImage.open(self.image)
+                img = img.convert('RGB')
+                output = io.BytesIO()
+                img.save(output, format='JPEG', quality=75, optimize=True)
+                output.seek(0)
+                self.image = ContentFile(
+                    output.read(),
+                    name=self.image.name.split('.')[0] + '.jpg'
+                )
+            except Exception:
+                pass
+
         super().save(*args, **kwargs)
 
 
@@ -63,17 +82,11 @@ class Product(models.Model):
 
     @property
     def primary_image(self):
-        # Pehle is_primary=True wali dhundo
         img = self.images.filter(is_primary=True).first()
-
-        # Nahi mili toh pehli image lo
         if not img:
             img = self.images.first()
-
         if not img or not img.image:
             return None
-
-        # Cloudinary URL directly return karo — SITE_URL add karne ki zarurat nahi
         try:
             return img.image.url
         except Exception:
@@ -108,12 +121,27 @@ class ProductImage(models.Model):
         return f"{self.product.name} — Image {self.order}"
 
     def save(self, *args, **kwargs):
-        # Pehle sari images ka is_primary False karo
         if self.is_primary:
             ProductImage.objects.filter(
                 product=self.product,
                 is_primary=True
             ).exclude(pk=self.pk).update(is_primary=False)
+
+        # Product image compress karo
+        if self.image:
+            try:
+                img = PilImage.open(self.image)
+                img = img.convert('RGB')
+                output = io.BytesIO()
+                img.save(output, format='JPEG', quality=75, optimize=True)
+                output.seek(0)
+                self.image = ContentFile(
+                    output.read(),
+                    name=self.image.name.split('.')[0] + '.jpg'
+                )
+            except Exception:
+                pass
+
         super().save(*args, **kwargs)
 
     @property
