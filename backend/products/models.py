@@ -1,13 +1,12 @@
 from django.db import models
 from django.utils.text import slugify
-from django.conf import settings
 
 
 class Category(models.Model):
     GENDER_CHOICES = [
-        ("men",   "Men"),
-        ("women", "Women"),
-        ("unisex","Unisex"),
+        ("men",    "Men"),
+        ("women",  "Women"),
+        ("unisex", "Unisex"),
     ]
 
     name       = models.CharField(max_length=100)
@@ -18,8 +17,8 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table  = "categories"
-        ordering  = ["name"]
+        db_table            = "categories"
+        ordering            = ["name"]
         verbose_name_plural = "Categories"
 
     def __str__(self):
@@ -33,9 +32,9 @@ class Category(models.Model):
 
 class Product(models.Model):
     GENDER_CHOICES = [
-        ("men",   "Men"),
-        ("women", "Women"),
-        ("unisex","Unisex"),
+        ("men",    "Men"),
+        ("women",  "Women"),
+        ("unisex", "Unisex"),
     ]
 
     category    = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="products")
@@ -46,7 +45,7 @@ class Product(models.Model):
     gender      = models.CharField(max_length=10, choices=GENDER_CHOICES, default="unisex")
     is_active   = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
-    tag         = models.CharField(max_length=50, blank=True)  # "New", "Bestseller", "Sale"
+    tag         = models.CharField(max_length=50, blank=True)
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at  = models.DateTimeField(auto_now=True)
 
@@ -64,19 +63,30 @@ class Product(models.Model):
 
     @property
     def primary_image(self):
+        # Pehle is_primary=True wali dhundo
         img = self.images.filter(is_primary=True).first()
+
+        # Nahi mili toh pehli image lo
         if not img:
             img = self.images.first()
-        if img:
-            return f"{settings.SITE_URL}{img.image.url}"
-        return None
+
+        if not img or not img.image:
+            return None
+
+        # Cloudinary URL directly return karo — SITE_URL add karne ki zarurat nahi
+        try:
+            return img.image.url
+        except Exception:
+            return None
 
     @property
     def avg_rating(self):
         reviews = self.reviews.all()
-        if not reviews:
+        if not reviews.exists():
             return 0
-        return round(sum(r.rating for r in reviews) / len(reviews), 1)
+        return round(
+            sum(r.rating for r in reviews) / reviews.count(), 1
+        )
 
     @property
     def review_count(self):
@@ -98,9 +108,22 @@ class ProductImage(models.Model):
         return f"{self.product.name} — Image {self.order}"
 
     def save(self, *args, **kwargs):
+        # Pehle sari images ka is_primary False karo
         if self.is_primary:
-            ProductImage.objects.filter(product=self.product, is_primary=True).update(is_primary=False)
+            ProductImage.objects.filter(
+                product=self.product,
+                is_primary=True
+            ).exclude(pk=self.pk).update(is_primary=False)
         super().save(*args, **kwargs)
+
+    @property
+    def image_url(self):
+        if self.image:
+            try:
+                return self.image.url
+            except Exception:
+                return None
+        return None
 
 
 class ProductVariant(models.Model):
@@ -113,14 +136,14 @@ class ProductVariant(models.Model):
         ("XXL", "XXL"),
     ]
 
-    product  = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variants")
-    size     = models.CharField(max_length=5, choices=SIZE_CHOICES)
-    color    = models.CharField(max_length=50, blank=True)
-    stock    = models.PositiveIntegerField(default=0)
-    sku      = models.CharField(max_length=100, unique=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variants")
+    size    = models.CharField(max_length=5, choices=SIZE_CHOICES)
+    color   = models.CharField(max_length=50, blank=True)
+    stock   = models.PositiveIntegerField(default=0)
+    sku     = models.CharField(max_length=100, unique=True, blank=True)
 
     class Meta:
-        db_table = "product_variants"
+        db_table        = "product_variants"
         unique_together = ["product", "size", "color"]
 
     def __str__(self):
@@ -132,5 +155,9 @@ class ProductVariant(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.sku:
-            self.sku = f"{self.product.id}-{self.size}-{self.color}".upper().replace(" ", "-")
+            self.sku = (
+                f"{self.product.id}-{self.size}-{self.color}"
+                .upper()
+                .replace(" ", "-")
+            )
         super().save(*args, **kwargs)
