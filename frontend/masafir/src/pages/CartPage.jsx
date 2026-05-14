@@ -51,7 +51,7 @@ export default function CartPage() {
           style={{ marginBottom: isMobile ? "20px" : "32px" }}
         >
           <div>
-            <p className="section-label mb-2">Your Selection</p>
+            <p className="section-label mb-2 text-charcoal-600">Your Selection</p>
             <h1
               className="font-display text-charcoal-900 font-light"
               style={{ fontSize: isMobile ? "28px" : "42px" }}
@@ -323,27 +323,6 @@ export default function CartPage() {
                 <Lock size={9} /> Secure checkout — SSL encrypted
               </p>
             </div>
-
-            {/* Trust badges */}
-            <div
-              style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "10px" }}
-            >
-              {[
-                { Icon: RotateCcw, label: "Free Returns", sub: "Within 14 days" },
-                { Icon: ShieldCheck, label: "Authentic", sub: "100% genuine" },
-                { Icon: Headphones, label: "Support", sub: "Mon–Sat, 9–6" },
-              ].map(({ Icon, label, sub }) => (
-                <div
-                  key={label}
-                  className="text-center border border-cream-200 bg-cream-50"
-                  style={{ padding: "12px 6px", borderRadius: "10px" }}
-                >
-                  <Icon size={15} className="text-charcoal-500 mx-auto" strokeWidth={1.5} style={{ marginBottom: "5px" }} />
-                  <p className="text-charcoal-900" style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.04em" }}>{label}</p>
-                  <p className="text-charcoal-500 font-light" style={{ fontSize: "10px", marginTop: "2px" }}>{sub}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -383,4 +362,3 @@ function EmptyCart() {
     </div>
   );
 }
-
