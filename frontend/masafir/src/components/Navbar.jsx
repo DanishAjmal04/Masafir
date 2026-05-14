@@ -66,6 +66,7 @@ export default function Navbar() {
         borderBottom:    navBorder,
         overflowX:       'hidden',
         boxSizing:       'border-box',
+        fontFamily:      "'Figtree', sans-serif"
       }}
     >
       <div style={{
@@ -120,6 +121,7 @@ export default function Navbar() {
                 color:         textCol,
                 transition:    'color 0.3s',
                 whiteSpace:    'nowrap',
+                fontFamily:    "'Figtree', sans-serif"
               }}
             >
               Masafir
@@ -226,6 +228,7 @@ export default function Navbar() {
                       ? '1px solid rgba(250,249,246,0.08)'
                       : 'none',
                     display:        'block',
+                    fontFamily:    "'Figtree', sans-serif"
                   }}
                 >
                   {label}
