@@ -436,29 +436,54 @@ export default function CheckoutPage() {
 
   // ✅ FIX 3: Place Order button handler - step 1 pe step 2 pe jaao
   const handlePlaceOrder = async () => {
+  // Step 1 → Step 2
   if (step === 1) {
+    // Basic validation
+    if (!form.shipping_name.trim() || !form.shipping_phone.trim() ||
+        !form.shipping_address.trim() || !form.shipping_city.trim() ||
+        !form.shipping_province) {
+      alert("Please fill all required fields.");
+      return;
+    }
+    if (!isAuthenticated && !form.guest_email.trim()) {
+      alert("Please enter your email address.");
+      return;
+    }
     setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
 
+  // Step 2 → Place Order
   try {
-    await dispatch(
-      placeOrderThunk({
-        ...form,
-        payment_method: payment,
-        items: items.map((item) => ({
-          product: item.id,
-          quantity: item.quantity,
-          size: item.size || null,
-        })),
-      })
-    ).unwrap();
+    const orderData = {
+      // Shipping info
+      shipping_name:     form.shipping_name,
+      shipping_phone:    form.shipping_phone,
+      shipping_address:  form.shipping_address,
+      shipping_city:     form.shipping_city,
+      shipping_province: form.shipping_province,
+      shipping_postal:   form.shipping_postal   || "",
+      notes:             form.notes             || "",
+      guest_email:       form.guest_email       || "",
 
+      // Payment
+      payment_method: payment,
+
+      // ← Yeh missing tha — cart items
+      items: items.map((i) => ({
+        product_id: i.id,
+        quantity:   i.quantity,
+        size:       i.size  || "",
+        color:      i.color || "",
+      })),
+    };
+
+    const result = await dispatch(placeOrderThunk(orderData)).unwrap();
     dispatch(clearCart());
     navigate("/order-success");
   } catch (err) {
-    console.error("Full error object:", JSON.stringify(err, null, 2));
+    console.error("Order error:", JSON.stringify(err, null, 2));
   }
 };
 
