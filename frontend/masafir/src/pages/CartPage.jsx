@@ -34,6 +34,13 @@ export default function CartPage() {
   const totalQty = items.reduce((s, i) => s + i.quantity, 0);
   const isMobile = useIsMobile();
 
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }, []);
+
   if (items.length === 0) return <EmptyCart />;
 
   return (
@@ -53,8 +60,8 @@ export default function CartPage() {
           <div>
             <p className="section-label mb-2 text-charcoal-600">Your Selection</p>
             <h1
-              className="font-display text-charcoal-900 font-light"
-              style={{ fontSize: isMobile ? "28px" : "42px" }}
+              className="text-charcoal-900"
+              style={{ fontSize: isMobile ? "28px" : "42px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}
             >
               Shopping Cart
             </h1>
@@ -277,8 +284,8 @@ export default function CartPage() {
               style={{ borderRadius: "14px", padding: isMobile ? "20px 16px" : "28px" }}
             >
               <h2
-                className="font-display text-charcoal-900 font-light"
-                style={{ fontSize: isMobile ? "20px" : "22px", marginBottom: "20px" }}
+                className="text-charcoal-900"
+                style={{ fontSize: isMobile ? "20px" : "22px", marginBottom: "20px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}
               >
                 Order Summary
               </h2>
@@ -301,7 +308,7 @@ export default function CartPage() {
                 <div className="bg-cream-300" style={{ height: "1px" }} />
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs tracking-widest uppercase text-charcoal-900" style={{ fontWeight: 600 }}>Total</span>
-                  <span className="font-display text-charcoal-900 font-light" style={{ fontSize: "22px" }}>
+                  <span className="text-charcoal-900" style={{ fontSize: "22px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}>
                     {formatPKR(grandTotal)}
                   </span>
                 </div>
@@ -332,6 +339,14 @@ export default function CartPage() {
 
 function EmptyCart() {
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }, []);
+
   return (
     <div className="min-h-screen bg-cream-50 flex items-center justify-center" style={{ paddingTop: "80px" }}>
       <div className="text-center px-4">
@@ -343,8 +358,8 @@ function EmptyCart() {
         </div>
         <p className="section-label" style={{ marginBottom: "12px" }}>Nothing here yet</p>
         <h2
-          className="font-display text-charcoal-900 font-light"
-          style={{ fontSize: isMobile ? "26px" : "34px", marginBottom: "16px" }}
+          className="text-charcoal-900"
+          style={{ fontSize: isMobile ? "26px" : "34px", marginBottom: "16px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}
         >
           Your cart is empty
         </h2>
