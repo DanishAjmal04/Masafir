@@ -13,7 +13,7 @@ from .emails import send_admin_new_order_email, send_user_order_placed_email, se
 
 
 class PlaceOrderView(APIView):
-    permission_classes = [permissions.AllowAny]  # ← guest bhi order de sake
+    permission_classes = [permissions.AllowAny]
     parser_classes     = [MultiPartParser, FormParser, JSONParser]
 
     def post(self, request):
@@ -23,8 +23,18 @@ class PlaceOrderView(APIView):
         )
         if serializer.is_valid():
             order = serializer.save()
-            send_admin_new_order_email(order)
-            send_user_order_placed_email(order)
+
+            # Email fail hone pe order cancel nahi hoga
+            try:
+                send_admin_new_order_email(order)
+            except Exception as e:
+                print(f"Admin email failed: {e}")
+
+            try:
+                send_user_order_placed_email(order)
+            except Exception as e:
+                print(f"User email failed: {e}")
+
             return Response(
                 OrderDetailSerializer(order).data,
                 status=status.HTTP_201_CREATED
