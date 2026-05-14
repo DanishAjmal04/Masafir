@@ -443,14 +443,21 @@ export default function CheckoutPage() {
   }
 
   try {
-    const result = await dispatch(
-      placeOrderThunk({ ...form, payment_method: payment })
+    await dispatch(
+      placeOrderThunk({
+        ...form,
+        payment_method: payment,
+        items: items.map((item) => ({
+          product: item.id,
+          quantity: item.quantity,
+          size: item.size || null,
+        })),
+      })
     ).unwrap();
 
     dispatch(clearCart());
     navigate("/order-success");
   } catch (err) {
-    // Yeh lagao temporarily - full error dekhne ke liye
     console.error("Full error object:", JSON.stringify(err, null, 2));
   }
 };
