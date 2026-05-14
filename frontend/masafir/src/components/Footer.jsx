@@ -4,25 +4,18 @@ import { Instagram, Facebook, Twitter, Youtube, ArrowRight } from "lucide-react"
 
 const LINKS = {
   Shop: [
-    { label: "New Arrivals",   to: "/shop/new"          },
-    { label: "Women",          to: "/shop/women"         },
-    { label: "Men",            to: "/shop/men"           },
-    { label: "Collections",    to: "/shop/collections"   },
-    { label: "Sale",           to: "/shop/sale"          },
+    { label: "New Arrivals", to: "/shop/new"        },
+    { label: "Women",        to: "/shop/women"       },
+    { label: "Men",          to: "/shop/men"         },
+    { label: "Collections",  to: "/shop/collections" },
+    { label: "Sale",         to: "/shop/sale"        },
   ],
   Help: [
-    { label: "Size Guide",     to: "/size-guide"         },
-    { label: "Shipping Info",  to: "/shipping"           },
-    { label: "Returns",        to: "/returns"            },
-    { label: "FAQs",           to: "/faqs"               },
-    { label: "Contact Us",     to: "/contact"            },
-  ],
-  Company: [
-    { label: "Our Story",      to: "/about"              },
-    { label: "Sustainability", to: "/sustainability"     },
-    { label: "Careers",        to: "/careers"            },
-    { label: "Press",          to: "/press"              },
-    { label: "Stockists",      to: "/stockists"          },
+    { label: "Size Guide",    to: "/size-guide" },
+    { label: "Shipping Info", to: "/shipping"   },
+    { label: "Returns",       to: "/returns"    },
+    { label: "FAQs",          to: "/faqs"       },
+    { label: "Contact Us",    to: "/contact"    },
   ],
 };
 
@@ -42,29 +35,25 @@ export default function Footer() {
       fontFamily:   "'Jost', sans-serif",
       color:        "#FDFBF7",
       paddingTop:   "clamp(48px, 8vw, 80px)",
-      // ✅ overflow hidden — koi bhi child bahar nahi jayega
       overflowX:    "hidden",
       boxSizing:    "border-box",
       width:        "100%",
     }}>
-
-      {/* ✅ width:100% + boxSizing + clamp padding */}
       <div style={{
-        width:      "100%",
-        maxWidth:   "1152px",
-        margin:     "0 auto",
-        padding:    "0 clamp(16px, 4vw, 48px)",
-        boxSizing:  "border-box",
+        width:     "100%",
+        maxWidth:  "1152px",
+        margin:    "0 auto",
+        padding:   "0 clamp(16px, 4vw, 48px)",
+        boxSizing: "border-box",
       }}>
 
-        {/* Main Grid — responsive */}
+        {/* Main Grid */}
         <div style={{
-          display:               "grid",
-          // ✅ mobile pe 2 cols, tablet pe 4 — auto-fit se overflow nahi hoga
-          gridTemplateColumns:   "repeat(auto-fit, minmax(140px, 1fr))",
-          gap:                   "clamp(24px, 4vw, 48px)",
-          paddingBottom:         "clamp(32px, 6vw, 64px)",
-          borderBottom:          "1px solid rgba(253,251,247,0.1)",
+          display:             "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+          gap:                 "clamp(24px, 4vw, 48px)",
+          paddingBottom:       "clamp(32px, 6vw, 64px)",
+          borderBottom:        "1px solid rgba(253,251,247,0.1)",
         }}>
 
           {/* Brand Column */}
@@ -99,7 +88,6 @@ export default function Footer() {
               color:        "rgba(253,251,247,0.5)",
               fontWeight:   300,
               lineHeight:   1.8,
-              marginBottom: "24px",
               margin:       "0 0 24px",
             }}>
               Crafted for those who move through the world with intention. Slow fashion, natural fabrics, and timeless silhouettes — made in Pakistan.
@@ -142,7 +130,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link Columns */}
+          {/* Link Columns — Shop + Help only */}
           {Object.entries(LINKS).map(([title, links]) => (
             <div key={title}>
               <span style={{
@@ -170,8 +158,8 @@ export default function Footer() {
                         display:        "block",
                         transition:     "color 0.2s",
                       }}
-                      onMouseEnter={e => e.currentTarget.style.color = "#C4A882"}
-                      onMouseLeave={e => e.currentTarget.style.color = "rgba(253,251,247,0.6)"}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#C4A882")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "rgba(253,251,247,0.6)")}
                     >
                       {label}
                     </Link>
@@ -182,7 +170,7 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Newsletter — responsive */}
+        {/* Newsletter */}
         <div style={{
           padding:        "clamp(28px, 5vw, 48px) 0",
           borderBottom:   "1px solid rgba(253,251,247,0.1)",
@@ -190,7 +178,6 @@ export default function Footer() {
           alignItems:     "flex-start",
           justifyContent: "space-between",
           gap:            "24px",
-          // ✅ mobile pe column
           flexWrap:       "wrap",
         }}>
           <div style={{ flexShrink: 0 }}>
@@ -217,12 +204,11 @@ export default function Footer() {
             </h3>
           </div>
 
-          {/* ✅ flex: 1 + minWidth: 0 — shrink hoga overflow nahi karega */}
           <div style={{
-            display:   "flex",
-            flex:      "1 1 240px",
-            minWidth:  0,
-            maxWidth:  "480px",
+            display:  "flex",
+            flex:     "1 1 240px",
+            minWidth: 0,
+            maxWidth: "480px",
           }}>
             <input
               type="email"
@@ -231,7 +217,7 @@ export default function Footer() {
               onChange={e => setEmail(e.target.value)}
               style={{
                 flex:          1,
-                minWidth:      0,       // ✅ zaroori — input shrink ho sake
+                minWidth:      0,
                 background:    "rgba(253,251,247,0.06)",
                 border:        "1px solid rgba(253,251,247,0.12)",
                 borderRight:   "none",
@@ -244,33 +230,33 @@ export default function Footer() {
                 outline:       "none",
                 boxSizing:     "border-box",
               }}
-              onFocus={e => e.currentTarget.style.borderColor = "rgba(196,168,130,0.4)"}
-              onBlur={e  => e.currentTarget.style.borderColor = "rgba(253,251,247,0.12)"}
+              onFocus={e => (e.currentTarget.style.borderColor = "rgba(196,168,130,0.4)")}
+              onBlur={e  => (e.currentTarget.style.borderColor = "rgba(253,251,247,0.12)")}
             />
             <button style={{
-              background:  "#C4A882",
-              border:      "1px solid #C4A882",
-              color:       "#0F0F0E",
-              padding:     "12px 16px",
-              cursor:      "pointer",
-              display:     "flex",
-              alignItems:  "center",
-              fontFamily:  "'Jost', sans-serif",
-              flexShrink:  0,
+              background: "#C4A882",
+              border:     "1px solid #C4A882",
+              color:      "#0F0F0E",
+              padding:    "12px 16px",
+              cursor:     "pointer",
+              display:    "flex",
+              alignItems: "center",
+              fontFamily: "'Jost', sans-serif",
+              flexShrink: 0,
             }}>
               <ArrowRight size={16} />
             </button>
           </div>
         </div>
 
-        {/* Bottom Bar — responsive */}
+        {/* Bottom Bar */}
         <div style={{
           padding:        "clamp(16px, 3vw, 24px) 0",
           display:        "flex",
           alignItems:     "center",
           justifyContent: "space-between",
           gap:            "12px",
-          flexWrap:       "wrap",   // ✅ mobile pe wrap hoga
+          flexWrap:       "wrap",
         }}>
           <span style={{
             fontSize:      "11px",
@@ -281,11 +267,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Masafir. All rights reserved.
           </span>
 
-          <div style={{
-            display:  "flex",
-            gap:      "clamp(12px, 2vw, 24px)",
-            flexWrap: "wrap",
-          }}>
+          <div style={{ display: "flex", gap: "clamp(12px, 2vw, 24px)", flexWrap: "wrap" }}>
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(label => (
               <Link
                 key={label}
@@ -299,8 +281,8 @@ export default function Footer() {
                   textDecoration: "none",
                   whiteSpace:     "nowrap",
                 }}
-                onMouseEnter={e => e.currentTarget.style.color = "rgba(253,251,247,0.6)"}
-                onMouseLeave={e => e.currentTarget.style.color = "rgba(253,251,247,0.3)"}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(253,251,247,0.6)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(253,251,247,0.3)")}
               >
                 {label}
               </Link>

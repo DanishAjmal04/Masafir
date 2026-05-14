@@ -7,10 +7,10 @@ import { selectCartCount } from '../store/cartSlice.js'
 const MOBILE_BP = 768
 
 export default function Navbar() {
-  const [scrolled,    setScrolled]    = useState(false)
-  const [menuOpen,    setMenuOpen]    = useState(false)
-  const [navHovered,  setNavHovered]  = useState(false)
-  const [isMobile,    setIsMobile]    = useState(
+  const [scrolled,   setScrolled]   = useState(false)
+  const [menuOpen,   setMenuOpen]   = useState(false)
+  const [navHovered, setNavHovered] = useState(false)
+  const [isMobile,   setIsMobile]   = useState(
     typeof window !== 'undefined' ? window.innerWidth < MOBILE_BP : false
   )
 
@@ -39,17 +39,17 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
-  const useDarkBar  = navHovered || scrolled || !isHome
-  const textCol     = '#faf9f6'
-  const navBg       = useDarkBar ? '#1a1a1a' : 'transparent'
-  const navBorder   = useDarkBar ? '1px solid rgba(250,249,246,0.12)' : '1px solid transparent'
+  const useDarkBar = navHovered || scrolled || !isHome
+  const textCol    = '#faf9f6'
+  const navBg      = useDarkBar ? '#1a1a1a' : 'transparent'
+  const navBorder  = useDarkBar ? '1px solid rgba(250,249,246,0.12)' : '1px solid transparent'
 
-  const navHeight      = isMobile ? 56  : 64
-  const logoSize       = isMobile ? 18  : 22
-  const logoTracking   = isMobile ? '0.2em' : '0.25em'
-  const iconSize       = isMobile ? 18  : 16
-  const menuIconSize   = isMobile ? 22  : 20
-  const rightGap       = isMobile ? 12  : 24
+  const navHeight    = isMobile ? 56  : 64
+  const logoSize     = isMobile ? 18  : 22
+  const logoTracking = isMobile ? '0.2em' : '0.25em'
+  const iconSize     = isMobile ? 18  : 16
+  const menuIconSize = isMobile ? 22  : 20
+  const rightGap     = isMobile ? 12  : 24
 
   return (
     <nav
@@ -64,18 +64,16 @@ export default function Navbar() {
         transition:      'background-color 0.35s ease, border-color 0.35s ease',
         backgroundColor: navBg,
         borderBottom:    navBorder,
-        // ✅ yeh zaroori hai — overflow rok deta hai
         overflowX:       'hidden',
         boxSizing:       'border-box',
       }}
     >
-      {/* ✅ width: 100% + boxSizing — padding overflow nahi karega */}
       <div style={{
-        width:      '100%',
-        maxWidth:   '1400px',
-        margin:     '0 auto',
-        padding:    isMobile ? '0 16px' : '0 48px',
-        boxSizing:  'border-box',
+        width:     '100%',
+        maxWidth:  '1400px',
+        margin:    '0 auto',
+        padding:   isMobile ? '0 16px' : '0 48px',
+        boxSizing: 'border-box',
       }}>
         <div style={{
           display:             'grid',
@@ -92,16 +90,16 @@ export default function Navbar() {
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
-                background: 'none',
-                border:     'none',
-                cursor:     'pointer',
-                color:      textCol,
-                display:    'flex',
-                alignItems: 'center',
+                background:     'none',
+                border:         'none',
+                cursor:         'pointer',
+                color:          textCol,
+                display:        'flex',
+                alignItems:     'center',
                 justifyContent: 'center',
-                padding:    '0',
-                minWidth:   44,
-                minHeight:  44,
+                padding:        '0',
+                minWidth:       44,
+                minHeight:      44,
               }}
               aria-expanded={menuOpen}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -146,8 +144,8 @@ export default function Navbar() {
                 minWidth:       44,
                 minHeight:      44,
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.65')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
               aria-label="Account"
             >
               <User size={iconSize} />
@@ -165,8 +163,8 @@ export default function Navbar() {
                 minWidth:       44,
                 minHeight:      44,
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.65')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
               aria-label="Cart"
             >
               <ShoppingBag size={iconSize} />
@@ -202,7 +200,6 @@ export default function Navbar() {
           <div style={{
             backgroundColor: useDarkBar ? '#1a1a1a' : 'rgba(26,26,26,0.97)',
             borderTop:       '1px solid rgba(250,249,246,0.12)',
-            // ✅ width 100% + boxSizing
             width:           '100%',
             boxSizing:       'border-box',
             padding:         isMobile ? '24px 16px 32px' : '32px 48px',
@@ -210,8 +207,6 @@ export default function Navbar() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {[
                 { label: 'Shop',    to: '/shop'    },
-                { label: 'Men',     to: '/shop/men' },
-                { label: 'Women',   to: '/shop/women' },
                 { label: 'Account', to: '/account' },
                 { label: 'Cart',    to: '/cart'    },
               ].map(({ label, to }, i, arr) => (
