@@ -19,6 +19,7 @@ const styles = {
     background: "radial-gradient(circle at top, #fffdf8 0%, #faf9f6 42%, #f7f4ef 100%)",
     color: "#1a1a1a",
     overflowX: "hidden",
+    fontFamily: "'Figtree', sans-serif",
   },
   container: {
     width: "min(1180px, 94vw)",
@@ -41,12 +42,14 @@ const styles = {
     textTransform: "uppercase",
     color: "#8a7a62",
     marginBottom: 12,
+    fontFamily: "'Figtree', sans-serif",
   },
   sectionTitle: {
     fontSize: "clamp(28px, 5vw, 44px)",
     lineHeight: 1.1,
     fontWeight: 300,
     margin: 0,
+    fontFamily: "'Figtree', sans-serif",
   },
   viewAll: {
     textDecoration: "none",
@@ -59,6 +62,7 @@ const styles = {
     gap: 8,
     paddingBottom: 4,
     borderBottom: "1px solid #d5c8b6",
+    fontFamily: "'Figtree', sans-serif",
   },
   ctaGhost: {
     border: "1px solid #faf9f6",
@@ -71,10 +75,10 @@ const styles = {
     transition: "all .25s ease",
     borderRadius: 10,
     display: "inline-block",
+    fontFamily: "'Figtree', sans-serif",
   },
 };
 
-// ✅ Marquee section alag component — navbar ke neeche sticky position ke liye
 function MarqueeBar() {
   return (
     <div
@@ -96,6 +100,7 @@ function MarqueeBar() {
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               margin: "0 22px",
+              fontFamily: "'Figtree', sans-serif",
             }}
           >
             {item}
@@ -122,21 +127,20 @@ export default function HomePage() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // ✅ Hero scroll detect karo — jab hero section khatam ho tab marquee navbar ke neeche show karo
-useEffect(() => {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      setShowMarquee(entry.intersectionRatio < 0.1);
-    },
-    {
-      threshold: [0, 0.1, 0.5, 1],
-    }
-  );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowMarquee(entry.intersectionRatio < 0.1);
+      },
+      {
+        threshold: [0, 0.1, 0.5, 1],
+      }
+    );
 
-  if (heroRef.current) observer.observe(heroRef.current);
+    if (heroRef.current) observer.observe(heroRef.current);
 
-  return () => observer.disconnect();
-}, []);
+    return () => observer.disconnect();
+  }, []);
 
   const handleQuickAdd = (item) => {
     dispatch(
@@ -156,30 +160,22 @@ useEffect(() => {
   return (
     <div style={styles.page}>
 
-      {/* ✅ Sticky marquee — navbar ke bilkul neeche, sirf jab hero scroll ho jaye */}
       <div
-  style={{
-    position: "fixed",
-    top: isMobile ? "56px" : "64px",
-    left: 0,
-    right: 0,
-    zIndex: 40,
-
-    transform: showMarquee
-      ? "translateY(0)"
-      : "translateY(-120%)",
-
-    opacity: showMarquee ? 1 : 0,
-
-    visibility: showMarquee ? "visible" : "hidden",
-
-    transition: "transform 0.45s ease, opacity 0.3s ease",
-
-    pointerEvents: showMarquee ? "auto" : "none",
-  }}
->
-  <MarqueeBar />
-</div>
+        style={{
+          position: "fixed",
+          top: isMobile ? "56px" : "64px",
+          left: 0,
+          right: 0,
+          zIndex: 40,
+          transform: showMarquee ? "translateY(0)" : "translateY(-120%)",
+          opacity: showMarquee ? 1 : 0,
+          visibility: showMarquee ? "visible" : "hidden",
+          transition: "transform 0.45s ease, opacity 0.3s ease",
+          pointerEvents: showMarquee ? "auto" : "none",
+        }}
+      >
+        <MarqueeBar />
+      </div>
 
       {/* ── HERO ── */}
       <section
@@ -191,7 +187,6 @@ useEffect(() => {
           overflow:  "hidden",
         }}
       >
-        {/* Video */}
         <video
           autoPlay
           muted
@@ -208,7 +203,6 @@ useEffect(() => {
           <source src={heroVideo} type="video/mp4" />
         </video>
 
-        {/* Overlay */}
         <div
           style={{
             position:   "absolute",
@@ -217,7 +211,6 @@ useEffect(() => {
           }}
         />
 
-        {/* Hero content — khali rakha, video hi hero hai */}
         <div
           style={{
             position:  "relative",
@@ -231,8 +224,6 @@ useEffect(() => {
         />
       </section>
 
-      {/* ── MARQUEE — normal flow mein bhi hai (hero ke baad) ── */}
-
       {/* ── FEATURED PRODUCTS ── */}
       <section style={styles.sectionPad}>
         <div style={styles.container}>
@@ -244,7 +235,6 @@ useEffect(() => {
             }}
           >
             <div style={{ width: "100%" }}>
-              {/* ✅ "Top Picks" hataya, "Best Sellers" → "Featured Products" */}
               <h2 className="font-display" style={styles.sectionTitle}>
                 Featured Products
               </h2>
@@ -288,7 +278,6 @@ useEffect(() => {
           overflow:   "hidden",
         }}
       >
-        {/* ✅ Background image — apna link yahan paste karo */}
         <div
           style={{
             position:           "absolute",
@@ -300,7 +289,6 @@ useEffect(() => {
           }}
         />
 
-        {/* Dark overlay taake text readable rahe */}
         <div
           style={{
             position:   "absolute",
@@ -309,7 +297,6 @@ useEffect(() => {
           }}
         />
 
-        {/* Content */}
         <div
           style={{
             position:      "relative",
@@ -338,6 +325,7 @@ useEffect(() => {
               lineHeight: 1.16,
               fontWeight: 300,
               margin:     "0 0 20px",
+              fontFamily: "'Figtree', sans-serif",
             }}
           >
             Clothing that travels
@@ -352,6 +340,7 @@ useEffect(() => {
               color:      "rgba(250,249,246,0.72)",
               lineHeight: 1.9,
               fontSize:   14,
+              fontFamily: "'Figtree', sans-serif",
             }}
           >
             Masafir was born from a love of journeys — the places we go, the
@@ -459,6 +448,7 @@ function ProductCard({ item, isAdded, onQuickAdd, isMobile }) {
               fontSize:        10,
               letterSpacing:   "0.12em",
               textTransform:   "uppercase",
+              fontFamily:      "'Figtree', sans-serif",
             }}
           >
             {item.tag}
@@ -484,6 +474,7 @@ function ProductCard({ item, isAdded, onQuickAdd, isMobile }) {
             transition:      "opacity 0.25s ease",
             opacity:         showQuickAdd ? 1 : 0,
             pointerEvents:   showQuickAdd ? "auto" : "none",
+            fontFamily:      "'Figtree', sans-serif",
           }}
         >
           {isAdded ? "Added" : "Quick Add"}
@@ -491,10 +482,10 @@ function ProductCard({ item, isAdded, onQuickAdd, isMobile }) {
       </div>
 
       <Link to={`/product/${item.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-        <p style={{ margin: "0 0 5px", fontSize: 13, lineHeight: 1.45, color: "#2a2a2a", fontWeight: 550 }}>
+        <p style={{ margin: "0 0 5px", fontSize: 13, lineHeight: 1.45, color: "#2a2a2a", fontWeight: 550, fontFamily: "'Figtree', sans-serif" }}>
           {item.name}
         </p>
-        <p style={{ margin: 0, fontSize: 12, letterSpacing: "0.03em", color: "#9a7d57", fontWeight: 550 }}>
+        <p style={{ margin: 0, fontSize: 12, letterSpacing: "0.03em", color: "#9a7d57", fontWeight: 550, fontFamily: "'Figtree', sans-serif" }}>
           {`Rs ${Number(item.price || 0).toLocaleString("en-PK")}`}
         </p>
       </Link>
