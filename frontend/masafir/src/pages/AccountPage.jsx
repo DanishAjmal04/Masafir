@@ -197,6 +197,7 @@ export default function AccountPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: T.cream, fontFamily: T.fontSans, paddingTop: "97px" }}>
+      {/* rest of code unchanged */}
       {/* ── Mobile top bar ── */}
       {isMobile && (
         <div
