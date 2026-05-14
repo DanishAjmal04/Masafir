@@ -1,17 +1,48 @@
-from django.core.mail import send_mail
+import os
+import base64
+from email.mime.text import MIMEText
+
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 from django.conf import settings
 
 
+def get_gmail_service():
+    creds = Credentials(
+        token         = None,
+        refresh_token = os.environ.get("GMAIL_REFRESH_TOKEN"),
+        token_uri     = "https://oauth2.googleapis.com/token",
+        client_id     = os.environ.get("GMAIL_CLIENT_ID"),
+        client_secret = os.environ.get("GMAIL_CLIENT_SECRET"),
+        scopes        = ["https://www.googleapis.com/auth/gmail.send"],
+    )
+    return build("gmail", "v1", credentials=creds)
+
+
+def send_gmail(to, subject, body):
+    """Gmail API se email bhejo"""
+    try:
+        service = get_gmail_service()
+        message = MIMEText(body)
+        message["to"]      = to
+        message["from"]    = os.environ.get("GMAIL_USER")
+        message["subject"] = subject
+        raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
+        service.users().messages().send(
+            userId="me",
+            body={"raw": raw}
+        ).execute()
+    except Exception as e:
+        print(f"Gmail API error: {e}")
+
+
 def get_order_email(order):
-    """User ya guest — dono ka email handle karo"""
     if order.user:
         return order.user.email
     return order.guest_email or None
 
 
 def send_admin_new_order_email(order):
-    """Jab order place ho — admin ko mail jaye"""
-
     items_text = "\n".join([
         f"  - {item.product_name} | Size: {item.size} | Color: {item.color} | Qty: {item.quantity} | PKR {item.price}"
         for item in order.items.all()
@@ -24,7 +55,6 @@ def send_admin_new_order_email(order):
     else:
         payment_info = f"Payment Method: {order.payment_method}"
 
-    # Customer email — user ya guest
     customer_email = get_order_email(order) or "N/A"
     customer_type  = "Registered User" if order.user else "Guest"
 
@@ -61,42 +91,38 @@ Total:      PKR {order.total}
 {payment_info}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Admin panel mein confirm karo:
-http://localhost:8000/admin/orders/order/
+Admin panel:
+https://masafir-backend.up.railway.app/admin/orders/order/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     """
 
-    send_mail(
-        subject        = f"🛍️ Naya Order: #{order.order_number} — PKR {order.total}",
-        message        = message,
-        from_email     = settings.DEFAULT_FROM_EMAIL,
-        recipient_list = [settings.ADMIN_EMAIL],
-        fail_silently  = True,
+    send_gmail(
+        to      = os.environ.get("ADMIN_EMAIL"),
+        subject = f"Naya Order: #{order.order_number} — PKR {order.total}",
+        body    = message,
     )
 
 
 def send_user_order_confirmed_email(order):
-    """Jab admin confirm kare — user ko mail jaye"""
-
     recipient = get_order_email(order)
     if not recipient:
-        return  # email nahi hai tou skip
+        return
 
     items_text = "\n".join([
-        f"  • {item.product_name} | Size: {item.size} | Qty: {item.quantity} | PKR {item.price}"
+        f"  - {item.product_name} | Size: {item.size} | Qty: {item.quantity} | PKR {item.price}"
         for item in order.items.all()
     ])
 
     message = f"""
 Assalam o Alaikum {order.shipping_name},
 
-Aapka order confirm ho gaya hai! 🎉
+Aapka order confirm ho gaya hai!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  ORDER DETAILS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Order Number:  {order.order_number}
-Status:        Confirmed ✅
+Status:        Confirmed
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  AAPKE ITEMS
@@ -118,32 +144,28 @@ Total:  PKR {order.total}
 Aapka order 2-3 working days mein deliver ho jayega.
 Koi sawaal ho toh reply karein.
 
-Shukriya Masafir choose karne ke liye! 🙏
+Shukriya Masafir choose karne ke liye!
 
 Masafir Team
 masafir.store
     """
 
-    send_mail(
-        subject        = f"✅ Order Confirm — #{order.order_number} | Masafir",
-        message        = message,
-        from_email     = settings.DEFAULT_FROM_EMAIL,
-        recipient_list = [recipient],   # ← fix
-        fail_silently  = True,
+    send_gmail(
+        to      = recipient,
+        subject = f"Order Confirm — #{order.order_number} | Masafir",
+        body    = message,
     )
 
 
 def send_user_order_placed_email(order):
-    """Jab order place ho — user ko acknowledgement mail"""
-
     recipient = get_order_email(order)
     if not recipient:
-        return  # email nahi hai tou skip
+        return
 
     if order.payment_method == "bank_transfer":
         payment_note = f"""
 Aapne bank transfer select kiya hai.
-Agar abhi tak transfer nahi ki toh yeh account mein karein:
+Yeh account mein transfer karein:
 
 Bank:           Meezan Bank
 Account Title:  Masafir Clothing
@@ -151,7 +173,7 @@ Account Number: 1234567890
 IBAN:           PK36MEZN0001234567890123
 Amount:         PKR {order.total}
 
-Reference mein apna order number zaroor likhein: {order.order_number}
+Reference mein order number zaroor likhein: {order.order_number}
 Payment confirm hone ke baad order dispatch hoga.
         """
     else:
@@ -160,7 +182,7 @@ Payment confirm hone ke baad order dispatch hoga.
     message = f"""
 Assalam o Alaikum {order.shipping_name},
 
-Aapka order receive ho gaya hai! Shukriya 🙏
+Aapka order receive ho gaya hai! Shukriya
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  ORDER NUMBER: {order.order_number}
@@ -175,10 +197,8 @@ Masafir Team
 masafir.store
     """
 
-    send_mail(
-        subject        = f"Order Receive Hua — #{order.order_number} | Masafir",
-        message        = message,
-        from_email     = settings.DEFAULT_FROM_EMAIL,
-        recipient_list = [recipient],   # ← fix
-        fail_silently  = True,
+    send_gmail(
+        to      = recipient,
+        subject = f"Order Receive Hua — #{order.order_number} | Masafir",
+        body    = message,
     )
