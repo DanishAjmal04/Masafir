@@ -136,24 +136,6 @@ export default function Navbar() {
             gap:            `${rightGap}px`,
           }}>
             <Link
-              to="/account"
-              style={{
-                color:          textCol,
-                display:        'flex',
-                alignItems:     'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                minWidth:       44,
-                minHeight:      44,
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.65')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-              aria-label="Account"
-            >
-              <User size={iconSize} />
-            </Link>
-
-            <Link
               to="/cart"
               style={{
                 position:       'relative',
