@@ -47,8 +47,10 @@ const T = {
   muted: "#3A3A36",
   sand: "#9E7D52",
   activeBg: "#F0E8D8",
-  fontSerif: "'Cormorant Garamond', serif",
-  fontSans: "'Jost', sans-serif",
+
+  /* ✅ ONLY CHANGE: FONT UPDATED TO FIGTREE */
+  fontSerif: "'Figtree', sans-serif",
+  fontSans: "'Figtree', sans-serif",
 };
 
 /* ─── shared styles ─── */
