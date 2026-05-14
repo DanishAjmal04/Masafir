@@ -553,7 +553,7 @@ export default function CheckoutPage() {
           </p>
 
           <Link
-            to="/products"
+            to="/shop"
             style={{
               display: "inline-flex",
               alignItems: "center",
