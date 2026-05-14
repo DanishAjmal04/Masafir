@@ -221,7 +221,7 @@ export default function HomePage() {
             alignItems:     "flex-end",
             justifyContent: "center",
             paddingBottom:  "clamp(40px, 6vw, 72px)",
-            padding:        "0 18px",
+            padding:        "18px 18px",
           }}
         >
           <Link
