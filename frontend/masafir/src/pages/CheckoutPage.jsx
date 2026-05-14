@@ -583,32 +583,24 @@ export default function CheckoutPage() {
             )}
 
             {/* Step 2: Payment */}
-            {step === 2 && (
-              <div style={s.formSection}>
-                <p style={s.sectionTitle}>Payment Method</p>
+            {error && step === 2 && (
+  <p style={{ color: "#c0392b", fontSize: "12px", marginTop: "10px", textAlign: "center" }}>
+    {typeof error === "string" ? error : "Order place nahi ho saka, dobara try karein."}
+  </p>
+)}
 
-                {PAYMENT_OPTIONS.map((opt) => (
-                  <div
-                    key={opt.value}
-                    style={{
-                      ...s.payOption(payment === opt.value),
-                      opacity: opt.disabled ? 0.5 : 1,
-                      cursor: opt.disabled ? "not-allowed" : "pointer",
-                    }}
-                    onClick={() => !opt.disabled && setPayment(opt.value)}
-                  >
-                    <div style={s.payRadio(payment === opt.value)}>
-                      {payment === opt.value && <div style={s.payDot} />}
-                    </div>
-                    <div>
-                      <p style={s.payLabel}>{opt.label}</p>
-                      <p style={s.payDesc}>{opt.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
+<button
+  style={{ ...s.submitBtn, opacity: loading ? 0.7 : 1 }}
+  onClick={handlePlaceOrder}
+  disabled={loading}
+>
+  {loading
+    ? "Processing..."
+    : step === 1
+    ? "Continue to Payment"
+    : `Place Order — ${formatPKR(grandTotal)}`}
+  <ArrowRight size={14} />
+</button>
             <button style={s.submitBtn} onClick={handlePlaceOrder}>
               {step === 1 ? "Continue to Payment" : `Place Order — ${formatPKR(grandTotal)}`}
               <ArrowRight size={14} />
