@@ -90,7 +90,7 @@ const s = {
   },
 
   heading: (isMobile) => ({
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: isMobile ? "32px" : "40px",
     fontWeight: 300,
     color: "#0F0F0E",
@@ -289,7 +289,7 @@ const s = {
   }),
 
   summaryTitle: {
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: "24px",
     fontWeight: 300,
     marginBottom: "22px",
@@ -362,7 +362,7 @@ const s = {
   },
 
   summaryTotalVal: {
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: "28px",
     color: "#0F0F0E",
   },
@@ -391,6 +391,13 @@ export default function CheckoutPage() {
     const handleResize = () => setIsMobile(window.innerWidth < 900);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
   }, []);
 
   const items = useSelector((s) => s.cart.items);
@@ -498,7 +505,7 @@ export default function CheckoutPage() {
           <span style={s.label}>Masafir</span>
 
           <h1 style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Figtree', sans-serif",
             fontSize: isMobile ? "36px" : "52px",
             fontWeight: 300,
             color: "#0F0F0E",
