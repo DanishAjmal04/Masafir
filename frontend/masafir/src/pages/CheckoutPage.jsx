@@ -435,15 +435,27 @@ export default function CheckoutPage() {
   const set = (k) => (e) => setForm((prev) => ({ ...prev, [k]: e.target.value }));
 
   // ✅ FIX 3: Place Order button handler - step 1 pe step 2 pe jaao
-  const handlePlaceOrder = () => {
-    if (step === 1) {
-      setStep(2);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    // Step 2 pe actual order place karo
-    dispatch(placeOrderThunk({ ...form, payment_method: payment }));
-  };
+  const handlePlaceOrder = async () => {
+  if (step === 1) {
+    setStep(2);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  // Step 2: order place karo
+  try {
+    await dispatch(
+      placeOrderThunk({ ...form, payment_method: payment })
+    ).unwrap(); // .unwrap() se error throw hota hai agar thunk reject ho
+
+    dispatch(clearCart());
+    navigate("/order-success"); // ya jo bhi aapka success route hai
+  } catch (err) {
+    // error already Redux state mein hai (s.orders.error)
+    // yahan kuch extra karna nahi, error UI mein show hoga
+    console.error("Order failed:", err);
+  }
+};
 
   return (
     <div style={s.page}>
