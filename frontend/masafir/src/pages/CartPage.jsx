@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Minus, Plus, ArrowRight, ShoppingBag, ArrowLeft, X, Lock } from "lucide-react";
+import { Minus, Plus, ArrowRight, ShoppingBag, ArrowLeft, X, Lock, RotateCcw, ShieldCheck, Headphones } from "lucide-react";
 import { removeFromCart, updateQuantity, selectCartTotal } from "../store/cartSlice.js";
 
 const formatPKR = (amount) =>
@@ -67,6 +67,8 @@ export default function CartPage() {
             {!isMobile && "Continue Shopping"}
           </Link>
         </div>
+
+        
 
         {/* Layout: stacked on mobile, 2-col on desktop */}
         <div
@@ -161,15 +163,7 @@ export default function CartPage() {
                         <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                           <span
                             className="border border-cream-300 text-charcoal-800"
-                            style={{
-                              padding: "3px 10px",
-                              borderRadius: "999px",
-                              fontSize: "11px",
-                              fontWeight: 600,
-                              backgroundColor: "#faf9f6",
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                            }}
+                            style={{ padding: "3px 10px", borderRadius: "999px", fontSize: "11px", fontWeight: 600, backgroundColor: "#faf9f6", letterSpacing: "0.08em", textTransform: "uppercase" }}
                           >
                             {item.size}
                           </span>
@@ -179,53 +173,19 @@ export default function CartPage() {
                             style={{ borderRadius: "8px", overflow: "hidden" }}
                           >
                             <button
-                              onClick={() =>
-                                item.quantity > 1 &&
-                                dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity - 1 }))
-                              }
+                              onClick={() => item.quantity > 1 && dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity - 1 }))}
                               disabled={item.quantity <= 1}
-                              style={{
-                                width: "28px",
-                                height: "28px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                              }}
+                              style={{ width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", cursor: "pointer" }}
                               className="text-charcoal-700 disabled:opacity-30"
                             >
                               <Minus size={9} />
                             </button>
-                            <span
-                              className="text-charcoal-900"
-                              style={{
-                                width: "28px",
-                                height: "28px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "12px",
-                                fontWeight: 700,
-                              }}
-                            >
+                            <span className="text-charcoal-900" style={{ width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: 700 }}>
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() =>
-                                dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity + 1 }))
-                              }
-                              style={{
-                                width: "28px",
-                                height: "28px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                              }}
+                              onClick={() => dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity + 1 }))}
+                              style={{ width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", cursor: "pointer" }}
                               className="text-charcoal-700"
                             >
                               <Plus size={9} />
@@ -241,17 +201,7 @@ export default function CartPage() {
                       <button
                         onClick={() => dispatch(removeFromCart({ id: item.id, size: item.size }))}
                         className="text-charcoal-500 hover:text-charcoal-900 transition-colors duration-200 inline-flex items-center gap-1"
-                        style={{
-                          marginTop: "8px",
-                          fontSize: "10px",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          padding: 0,
-                          fontWeight: 500,
-                        }}
+                        style={{ marginTop: "8px", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 500 }}
                       >
                         <X size={9} /> Remove
                       </button>
@@ -263,15 +213,7 @@ export default function CartPage() {
                     <div style={{ textAlign: "center" }}>
                       <span
                         className="border border-cream-300 text-charcoal-800"
-                        style={{
-                          padding: "5px 12px",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                          borderRadius: "999px",
-                          backgroundColor: "#faf9f6",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                        }}
+                        style={{ padding: "5px 12px", textTransform: "uppercase", letterSpacing: "0.1em", borderRadius: "999px", backgroundColor: "#faf9f6", fontSize: "11px", fontWeight: 700 }}
                       >
                         {item.size}
                       </span>
@@ -286,53 +228,22 @@ export default function CartPage() {
                         style={{ borderRadius: "9px", overflow: "hidden" }}
                       >
                         <button
-                          onClick={() =>
-                            item.quantity > 1 &&
-                            dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity - 1 }))
-                          }
+                          onClick={() => item.quantity > 1 && dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity - 1 }))}
                           disabled={item.quantity <= 1}
-                          style={{
-                            width: "34px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                          }}
+                          style={{ width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", cursor: "pointer" }}
                           className="text-charcoal-700 hover:bg-cream-200 disabled:opacity-30 transition-all"
                         >
                           <Minus size={10} />
                         </button>
                         <span
                           className="text-charcoal-900 border-x border-cream-300"
-                          style={{
-                            width: "34px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "13px",
-                            fontWeight: 700,
-                          }}
+                          style={{ width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontWeight: 700 }}
                         >
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() =>
-                            dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity + 1 }))
-                          }
-                          style={{
-                            width: "34px",
-                            height: "34px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                          }}
+                          onClick={() => dispatch(updateQuantity({ id: item.id, size: item.size, quantity: item.quantity + 1 }))}
+                          style={{ width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", cursor: "pointer" }}
                           className="text-charcoal-700 hover:bg-cream-200 transition-all"
                         >
                           <Plus size={10} />
@@ -382,18 +293,14 @@ export default function CartPage() {
                 <div className="flex justify-between items-center">
                   <span className="text-xs tracking-wide text-charcoal-600 uppercase">Shipping</span>
                   {shippingCost === 0 ? (
-                    <span className="text-sm" style={{ color: "#3B6D11" }}>
-                      Free
-                    </span>
+                    <span className="text-sm" style={{ color: "#3B6D11" }}>Free</span>
                   ) : (
                     <span className="text-sm text-charcoal-900">{formatPKR(shippingCost)}</span>
                   )}
                 </div>
                 <div className="bg-cream-300" style={{ height: "1px" }} />
                 <div className="flex justify-between items-baseline">
-                  <span className="text-xs tracking-widest uppercase text-charcoal-900" style={{ fontWeight: 600 }}>
-                    Total
-                  </span>
+                  <span className="text-xs tracking-widest uppercase text-charcoal-900" style={{ fontWeight: 600 }}>Total</span>
                   <span className="font-display text-charcoal-900 font-light" style={{ fontSize: "22px" }}>
                     {formatPKR(grandTotal)}
                   </span>
@@ -403,14 +310,7 @@ export default function CartPage() {
               <Link
                 to="/checkout"
                 className="flex items-center justify-between w-full bg-charcoal-900 text-cream-50 hover:bg-charcoal-700 transition-all duration-300 group font-light"
-                style={{
-                  padding: "14px 20px",
-                  fontSize: "10px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  borderRadius: "10px",
-                  textDecoration: "none",
-                }}
+                style={{ padding: "14px 20px", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", borderRadius: "10px", textDecoration: "none" }}
               >
                 Proceed to Checkout
                 <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -441,9 +341,7 @@ function EmptyCart() {
         >
           <ShoppingBag size={22} className="text-charcoal-500" strokeWidth={1} />
         </div>
-        <p className="section-label" style={{ marginBottom: "12px" }}>
-          Nothing here yet
-        </p>
+        <p className="section-label" style={{ marginBottom: "12px" }}>Nothing here yet</p>
         <h2
           className="font-display text-charcoal-900 font-light"
           style={{ fontSize: isMobile ? "26px" : "34px", marginBottom: "16px" }}
