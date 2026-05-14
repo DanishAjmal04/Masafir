@@ -109,8 +109,8 @@ class PlaceOrderSerializer(serializers.Serializer):
 
         # User — logged in hai ya guest
         user        = request.user if request.user.is_authenticated else None
-        guest_email = validated_data.pop("guest_email", "") if not user else ""
-        guest_name  = validated_data.pop("guest_name",  "") if not user else ""
+        guest_email = validated_data.pop("guest_email", "")
+        guest_name  = validated_data.pop("guest_name",  "")
 
         order = Order.objects.create(
             user        = user,
