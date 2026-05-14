@@ -442,18 +442,16 @@ export default function CheckoutPage() {
     return;
   }
 
-  // Step 2: order place karo
   try {
-    await dispatch(
+    const result = await dispatch(
       placeOrderThunk({ ...form, payment_method: payment })
-    ).unwrap(); // .unwrap() se error throw hota hai agar thunk reject ho
+    ).unwrap();
 
     dispatch(clearCart());
-    navigate("/order-success"); // ya jo bhi aapka success route hai
+    navigate("/order-success");
   } catch (err) {
-    // error already Redux state mein hai (s.orders.error)
-    // yahan kuch extra karna nahi, error UI mein show hoga
-    console.error("Order failed:", err);
+    // Yeh lagao temporarily - full error dekhne ke liye
+    console.error("Full error object:", JSON.stringify(err, null, 2));
   }
 };
 
