@@ -56,7 +56,7 @@ const s = {
   page: {
     minHeight: "100vh",
     background: "#FDFBF7",
-    fontFamily: "'Jost', sans-serif",
+    fontFamily: "'Figtree', sans-serif",
     paddingTop: "97px",
     paddingBottom: "96px",
   },
