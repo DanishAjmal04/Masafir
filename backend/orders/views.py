@@ -25,15 +25,15 @@ class PlaceOrderView(APIView):
             order = serializer.save()
 
             # Email fail hone pe order cancel nahi hoga
-            try:
-                send_admin_new_order_email(order)
-            except Exception as e:
-                print(f"Admin email failed: {e}")
+            # try:
+            #     send_admin_new_order_email(order)
+            # except Exception as e:
+            #     print(f"Admin email failed: {e}")
 
-            try:
-                send_user_order_placed_email(order)
-            except Exception as e:
-                print(f"User email failed: {e}")
+            # try:
+            #     send_user_order_placed_email(order)
+            # except Exception as e:
+            #     print(f"User email failed: {e}")
 
             return Response(
                 OrderDetailSerializer(order).data,
