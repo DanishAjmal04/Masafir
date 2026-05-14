@@ -5,6 +5,9 @@ import { ArrowLeft, ArrowRight, Minus, Plus, Share2, ChevronDown } from "lucide-
 import { addToCart } from "../store/cartSlice.js";
 import { useProduct } from "../hooks/useProduct";
 import { reviewService } from "../services/reviewService";
+import "@fontsource/figtree";
+import ReviewsSection from "../components/ReviewsSection.jsx";
+import RelatedProducts from "../components/RelatedProducts.jsx";
 
 const formatPKR = (amount) =>
   new Intl.NumberFormat("en-PK", {
