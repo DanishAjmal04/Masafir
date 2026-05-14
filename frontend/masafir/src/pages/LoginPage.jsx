@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../hooks/useAuth";
+import heroImage from "../assets/3.jpg";
 
 const s = {
   page: {
     minHeight: "100vh",
     background: "#FDFBF7",
-    fontFamily: "'Jost', sans-serif",
+    fontFamily: "'Figtree', sans-serif",
     display: "flex",
     flexDirection: "column",
   },
@@ -45,7 +46,7 @@ const s = {
   },
 
   imageQuote: (isMobile) => ({
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: isMobile ? "24px" : "38px",
     fontWeight: 300,
     color: "#FDFBF7",
@@ -59,6 +60,7 @@ const s = {
     textTransform: "uppercase",
     color: "rgba(253,251,247,0.65)",
     fontWeight: 300,
+    fontFamily: "'Figtree', sans-serif",
   },
 
   formSide: (isMobile) => ({
@@ -68,6 +70,7 @@ const s = {
     padding: isMobile ? "40px 20px" : "80px 64px",
     background: "#FDFBF7",
     overflowY: "auto",
+    fontFamily: "'Figtree', sans-serif",
   }),
 
   formInner: {
@@ -77,7 +80,7 @@ const s = {
   },
 
   logo: (isMobile) => ({
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: isMobile ? "20px" : "24px",
     fontWeight: 300,
     letterSpacing: "0.3em",
@@ -111,10 +114,11 @@ const s = {
     color: active ? "#0F0F0E" : "#666",
     marginBottom: "-1px",
     transition: "all 0.2s",
+    fontFamily: "'Figtree', sans-serif",
   }),
 
   heading: (isMobile) => ({
-    fontFamily: "'Cormorant Garamond', serif",
+    fontFamily: "'Figtree', sans-serif",
     fontSize: isMobile ? "30px" : "40px",
     fontWeight: 300,
     color: "#0F0F0E",
@@ -128,6 +132,7 @@ const s = {
     fontWeight: 300,
     marginBottom: "30px",
     lineHeight: 1.7,
+    fontFamily: "'Figtree', sans-serif",
   },
 
   fieldWrap: {
@@ -142,6 +147,7 @@ const s = {
     color: "#3A3A36",
     fontWeight: 500,
     marginBottom: "8px",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   input: (hasError) => ({
@@ -155,6 +161,7 @@ const s = {
     boxSizing: "border-box",
     borderRadius: "12px",
     transition: "0.2s",
+    fontFamily: "'Figtree', sans-serif",
   }),
 
   inputWrap: {
@@ -179,6 +186,7 @@ const s = {
     fontSize: "11px",
     color: "#ef4444",
     marginTop: "5px",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   apiError: {
@@ -189,6 +197,7 @@ const s = {
     fontSize: "12px",
     color: "#DC2626",
     borderRadius: "10px",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   submitBtn: {
@@ -208,6 +217,7 @@ const s = {
     marginTop: "8px",
     borderRadius: "12px",
     transition: "0.2s",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   submitBtnDisabled: {
@@ -233,6 +243,7 @@ const s = {
     color: "#777",
     letterSpacing: "0.1em",
     textTransform: "uppercase",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   switchText: {
@@ -240,6 +251,7 @@ const s = {
     color: "#555",
     textAlign: "center",
     marginTop: "22px",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   switchLink: {
@@ -249,6 +261,7 @@ const s = {
     border: "none",
     fontSize: "13px",
     textDecoration: "underline",
+    fontFamily: "'Figtree', sans-serif",
   },
 
   row2: (isMobile) => ({
@@ -274,6 +287,7 @@ const s = {
     fontSize: "12px",
     color: "#555",
     lineHeight: 1.6,
+    fontFamily: "'Figtree', sans-serif",
   },
 };
 
@@ -297,7 +311,7 @@ export default function LoginPage() {
         {!isMobile && (
           <div style={s.imageSide}>
             <img
-              src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&q=80"
+              src={heroImage}
               alt="Masafir"
               style={s.image}
             />
@@ -409,7 +423,6 @@ function LoginForm({ onSwitch, isMobile }) {
 
         <input
           type="email"
-          placeholder="you@example.com"
           value={form.email}
           onChange={(e) =>
             setForm({ ...form, email: e.target.value })
@@ -428,7 +441,6 @@ function LoginForm({ onSwitch, isMobile }) {
         <div style={s.inputWrap}>
           <input
             type={showPass ? "text" : "password"}
-            placeholder="••••••••"
             value={form.password}
             onChange={(e) =>
               setForm({ ...form, password: e.target.value })
@@ -444,11 +456,7 @@ function LoginForm({ onSwitch, isMobile }) {
             style={s.eyeBtn}
             onClick={() => setShowPass(!showPass)}
           >
-            {showPass ? (
-              <EyeOff size={16} />
-            ) : (
-              <Eye size={16} />
-            )}
+            {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
 
@@ -582,9 +590,7 @@ function RegisterForm({ onSwitch, isMobile }) {
           />
 
           {errors.first_name && (
-            <p style={s.errorText}>
-              {errors.first_name}
-            </p>
+            <p style={s.errorText}>{errors.first_name}</p>
           )}
         </div>
 
@@ -604,9 +610,7 @@ function RegisterForm({ onSwitch, isMobile }) {
           />
 
           {errors.last_name && (
-            <p style={s.errorText}>
-              {errors.last_name}
-            </p>
+            <p style={s.errorText}>{errors.last_name}</p>
           )}
         </div>
       </div>
@@ -637,7 +641,6 @@ function RegisterForm({ onSwitch, isMobile }) {
           onChange={(e) =>
             setForm({ ...form, phone: e.target.value })
           }
-          placeholder="03xx-xxxxxxx"
           style={s.input(false)}
         />
       </div>
@@ -666,11 +669,7 @@ function RegisterForm({ onSwitch, isMobile }) {
             style={s.eyeBtn}
             onClick={() => setShowPass(!showPass)}
           >
-            {showPass ? (
-              <EyeOff size={16} />
-            ) : (
-              <Eye size={16} />
-            )}
+            {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
 
@@ -703,11 +702,7 @@ function RegisterForm({ onSwitch, isMobile }) {
             style={s.eyeBtn}
             onClick={() => setShowPass2(!showPass2)}
           >
-            {showPass2 ? (
-              <EyeOff size={16} />
-            ) : (
-              <Eye size={16} />
-            )}
+            {showPass2 ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
 
