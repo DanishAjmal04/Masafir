@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  ShoppingBag,
 } from "lucide-react";
 
 import { placeOrderThunk } from "../store/ordersSlice";
@@ -43,6 +42,7 @@ const PAYMENT_OPTIONS = [
     value: "bank_transfer",
     label: "Bank Transfer",
     desc: "Transfer to our account before dispatch",
+    disabled: true,
   },
   {
     value: "card",
@@ -121,11 +121,7 @@ const s = {
     fontSize: "10px",
     letterSpacing: "0.12em",
     textTransform: "uppercase",
-    color: done
-      ? "#9E7D52"
-      : active
-      ? "#0F0F0E"
-      : "#C4B8A8",
+    color: done ? "#9E7D52" : active ? "#0F0F0E" : "#C4B8A8",
     fontWeight: active ? 500 : 300,
     whiteSpace: "nowrap",
   }),
@@ -139,16 +135,9 @@ const s = {
     justifyContent: "center",
     fontSize: "10px",
     flexShrink: 0,
-    background: done
-      ? "#0F0F0E"
-      : active
-      ? "#0F0F0E"
-      : "none",
+    background: done ? "#0F0F0E" : active ? "#0F0F0E" : "none",
     color: done || active ? "#FDFBF7" : "#C4B8A8",
-    border:
-      done || active
-        ? "none"
-        : "1px solid #C4B8A8",
+    border: done || active ? "none" : "1px solid #C4B8A8",
   }),
 
   stepLine: {
@@ -240,9 +229,7 @@ const s = {
     marginBottom: "10px",
     cursor: "pointer",
     borderRadius: "12px",
-    border: `1px solid ${
-      active ? "#0F0F0E" : "#E5D5BC"
-    }`,
+    border: `1px solid ${active ? "#0F0F0E" : "#E5D5BC"}`,
     background: active ? "#F9F5EE" : "#FDFBF7",
   }),
 
@@ -250,9 +237,7 @@ const s = {
     width: "16px",
     height: "16px",
     borderRadius: "50%",
-    border: `2px solid ${
-      active ? "#0F0F0E" : "#C4B8A8"
-    }`,
+    border: `2px solid ${active ? "#0F0F0E" : "#C4B8A8"}`,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -383,48 +368,43 @@ const s = {
   },
 };
 
+const InputField = ({ name, label, placeholder, type = "text", value, onChange }) => (
+  <div style={s.fieldWrap}>
+    <label style={s.fieldLabel}>{label}</label>
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      style={s.input}
+    />
+  </div>
+);
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth < 900
-  );
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 900);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth < 900);
     window.addEventListener("resize", handleResize);
-
-    return () =>
-      window.removeEventListener(
-        "resize",
-        handleResize
-      );
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const items = useSelector((s) => s.cart.items);
-
   const total = useSelector(selectCartTotal);
+  const { loading, error } = useSelector((s) => s.orders);
+  const { user, isAuthenticated } = useSelector((s) => s.auth);
 
-  const { loading, error } = useSelector(
-    (s) => s.orders
-  );
-
-  const { user, isAuthenticated } = useSelector(
-    (s) => s.auth
-  );
-
-  const shippingCost =
-    total >= SHIPPING_THRESHOLD ? 0 : 350;
-
+  const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : 350;
   const grandTotal = total + shippingCost;
 
   const [step, setStep] = useState(1);
-
   const [payment, setPayment] = useState("cod");
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [orderNumber, setOrderNumber] = useState("");
 
   const [form, setForm] = useState({
     shipping_name: user?.full_name || "",
@@ -437,34 +417,164 @@ export default function CheckoutPage() {
     notes: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const set = (k) => (e) => setForm((prev) => ({ ...prev, [k]: e.target.value }));
 
-  const set = (k) => (e) =>
-    setForm({
-      ...form,
-      [k]: e.target.value,
-    });
+  const handlePlaceOrder = async () => {
+    if (step === 1) {
+      if (
+        !form.shipping_name.trim() || !form.shipping_phone.trim() ||
+        !form.shipping_address.trim() || !form.shipping_city.trim() ||
+        !form.shipping_province
+      ) {
+        alert("Please fill all required fields.");
+        return;
+      }
+      if (!isAuthenticated && !form.guest_email.trim()) {
+        alert("Please enter your email address.");
+        return;
+      }
+      setStep(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
 
-  const InputField = ({
-    name,
-    label,
-    placeholder,
-    type = "text",
-  }) => (
-    <div style={s.fieldWrap}>
-      <label style={s.fieldLabel}>
-        {label}
-      </label>
+    try {
+      const orderData = {
+        shipping_name:     form.shipping_name,
+        shipping_phone:    form.shipping_phone,
+        shipping_address:  form.shipping_address,
+        shipping_city:     form.shipping_city,
+        shipping_province: form.shipping_province,
+        shipping_postal:   form.shipping_postal  || "",
+        notes:             form.notes            || "",
+        guest_email:       form.guest_email      || "",
+        payment_method:    payment,
+        items: items.map((i) => ({
+          product_id: i.id,
+          quantity:   i.quantity,
+          size:       i.size  || "",
+          color:      i.color || "",
+        })),
+      };
 
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={form[name]}
-        onChange={set(name)}
-        style={s.input}
-      />
-    </div>
-  );
+      const result = await dispatch(placeOrderThunk(orderData)).unwrap();
+      dispatch(clearCart());
+      setOrderNumber(result.order_number || "");
+      setOrderPlaced(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.error("Order error:", JSON.stringify(err, null, 2));
+    }
+  };
+
+  // ✅ Order success screen
+  if (orderPlaced) {
+    return (
+      <div style={s.page}>
+        <div style={{
+          maxWidth: "560px",
+          margin: "0 auto",
+          padding: isMobile ? "48px 24px" : "80px 48px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+        }}>
+
+          {/* Check circle */}
+          <div style={{
+            width: "68px",
+            height: "68px",
+            borderRadius: "50%",
+            background: "#0F0F0E",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "32px",
+          }}>
+            <Check size={28} color="#FDFBF7" />
+          </div>
+
+          <span style={s.label}>Masafir</span>
+
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: isMobile ? "36px" : "52px",
+            fontWeight: 300,
+            color: "#0F0F0E",
+            margin: "10px 0 0",
+            lineHeight: 1.1,
+          }}>
+            Order Confirmed
+          </h1>
+
+          {orderNumber && (
+            <p style={{
+              fontSize: "11px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#9E7D52",
+              margin: "16px 0 0",
+            }}>
+              #{orderNumber}
+            </p>
+          )}
+
+          <div style={{
+            width: "40px",
+            height: "1px",
+            background: "#E5D5BC",
+            margin: "28px 0",
+          }} />
+
+          <p style={{
+            fontSize: "13px",
+            color: "#3A3A36",
+            lineHeight: "1.9",
+            margin: "0 0 8px",
+          }}>
+            Thank you for your order.
+          </p>
+          <p style={{
+            fontSize: "13px",
+            color: "#3A3A36",
+            lineHeight: "1.9",
+            margin: "0 0 8px",
+          }}>
+            A confirmation email has been sent to you.
+          </p>
+          <p style={{
+            fontSize: "13px",
+            color: "#3A3A36",
+            lineHeight: "1.9",
+            margin: "0 0 40px",
+          }}>
+            Your order will be delivered within 2–3 working days.
+          </p>
+
+          <Link
+            to="/products"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              background: "#0F0F0E",
+              color: "#FDFBF7",
+              padding: "15px 36px",
+              fontSize: "11px",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              borderRadius: "12px",
+            }}
+          >
+            Browse Collection
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={s.page}>
@@ -475,43 +585,30 @@ export default function CheckoutPage() {
         </Link>
 
         <span style={s.label}>Masafir</span>
-
-        <h1 style={s.heading(isMobile)}>
-          Checkout
-        </h1>
+        <h1 style={s.heading(isMobile)}>Checkout</h1>
 
         {/* Steps */}
         <div style={s.steps(isMobile)}>
           <div style={s.step(step === 1, step > 1)}>
-            <div
-              style={s.stepNum(step === 1, step > 1)}
-            >
-              {step > 1 ? (
-                <Check size={11} />
-              ) : (
-                "1"
-              )}
+            <div style={s.stepNum(step === 1, step > 1)}>
+              {step > 1 ? <Check size={11} /> : "1"}
             </div>
             Shipping
           </div>
 
           <div style={s.stepLine} />
 
-          <div style={s.step(step === 2, false)}>
-            <div
-              style={s.stepNum(step === 2, false)}
-            >
-              2
+          <div style={s.step(step === 2, step > 2)}>
+            <div style={s.stepNum(step === 2, step > 2)}>
+              {step > 2 ? <Check size={11} /> : "2"}
             </div>
             Payment
           </div>
 
           <div style={s.stepLine} />
 
-          <div style={s.step(false, false)}>
-            <div style={s.stepNum(false, false)}>
-              3
-            </div>
+          <div style={s.step(step === 3, false)}>
+            <div style={s.stepNum(step === 3, false)}>3</div>
             Confirm
           </div>
         </div>
@@ -519,182 +616,163 @@ export default function CheckoutPage() {
         <div style={s.layout(isMobile)}>
           {/* LEFT SIDE */}
           <div>
-            <div style={s.formSection}>
-              <p style={s.sectionTitle}>
-                Shipping Information
-              </p>
+            {/* Step 1: Shipping */}
+            {step === 1 && (
+              <div style={s.formSection}>
+                <p style={s.sectionTitle}>Shipping Information</p>
 
-              {!isAuthenticated && (
+                {!isAuthenticated && (
+                  <InputField
+                    name="guest_email"
+                    label="Email Address *"
+                    placeholder="you@example.com"
+                    type="email"
+                    value={form.guest_email}
+                    onChange={set("guest_email")}
+                  />
+                )}
+
+                <div style={s.grid2(isMobile)}>
+                  <InputField
+                    name="shipping_name"
+                    label="Full Name *"
+                    placeholder="Sara Ahmed"
+                    value={form.shipping_name}
+                    onChange={set("shipping_name")}
+                  />
+                  <InputField
+                    name="shipping_phone"
+                    label="Phone Number *"
+                    placeholder="03xx-xxxxxxx"
+                    value={form.shipping_phone}
+                    onChange={set("shipping_phone")}
+                  />
+                </div>
+
                 <InputField
-                  name="guest_email"
-                  label="Email Address *"
-                  placeholder="you@example.com"
-                  type="email"
+                  name="shipping_address"
+                  label="Street Address *"
+                  placeholder="House no., Street, Area"
+                  value={form.shipping_address}
+                  onChange={set("shipping_address")}
                 />
-              )}
 
-              <div style={s.grid2(isMobile)}>
+                <div style={s.grid2(isMobile)}>
+                  <InputField
+                    name="shipping_city"
+                    label="City *"
+                    placeholder="Lahore"
+                    value={form.shipping_city}
+                    onChange={set("shipping_city")}
+                  />
+
+                  <div style={s.fieldWrap}>
+                    <label style={s.fieldLabel}>Province *</label>
+                    <select
+                      value={form.shipping_province}
+                      onChange={set("shipping_province")}
+                      style={s.select}
+                    >
+                      <option value="">Select province</option>
+                      {PROVINCES.map((p) => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <InputField
-                  name="shipping_name"
-                  label="Full Name *"
-                  placeholder="Sara Ahmed"
-                />
-
-                <InputField
-                  name="shipping_phone"
-                  label="Phone Number *"
-                  placeholder="03xx-xxxxxxx"
-                />
-              </div>
-
-              <InputField
-                name="shipping_address"
-                label="Street Address *"
-                placeholder="House no., Street, Area"
-              />
-
-              <div style={s.grid2(isMobile)}>
-                <InputField
-                  name="shipping_city"
-                  label="City *"
-                  placeholder="Lahore"
+                  name="shipping_postal"
+                  label="Postal Code"
+                  placeholder="54000"
+                  value={form.shipping_postal}
+                  onChange={set("shipping_postal")}
                 />
 
                 <div style={s.fieldWrap}>
-                  <label style={s.fieldLabel}>
-                    Province *
-                  </label>
-
-                  <select
-                    value={form.shipping_province}
-                    onChange={set(
-                      "shipping_province"
-                    )}
-                    style={s.select}
-                  >
-                    <option value="">
-                      Select province
-                    </option>
-
-                    {PROVINCES.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
-                      </option>
-                    ))}
-                  </select>
+                  <label style={s.fieldLabel}>Order Notes</label>
+                  <textarea
+                    placeholder="Special instructions..."
+                    value={form.notes}
+                    onChange={set("notes")}
+                    style={s.textarea}
+                  />
                 </div>
               </div>
+            )}
 
-              <InputField
-                name="shipping_postal"
-                label="Postal Code"
-                placeholder="54000"
-              />
+            {/* Step 2: Payment */}
+            {step === 2 && (
+              <div style={s.formSection}>
+                <p style={s.sectionTitle}>Payment Method</p>
 
-              <div style={s.fieldWrap}>
-                <label style={s.fieldLabel}>
-                  Order Notes
-                </label>
-
-                <textarea
-                  placeholder="Special instructions..."
-                  value={form.notes}
-                  onChange={set("notes")}
-                  style={s.textarea}
-                />
-              </div>
-            </div>
-
-            {/* PAYMENT */}
-            <div style={s.formSection}>
-              <p style={s.sectionTitle}>
-                Payment Method
-              </p>
-
-              {PAYMENT_OPTIONS.map((opt) => (
-                <div
-                  key={opt.value}
-                  style={{
-                    ...s.payOption(
-                      payment === opt.value
-                    ),
-                    opacity: opt.disabled ? 0.5 : 1,
-                    cursor: opt.disabled
-                      ? "not-allowed"
-                      : "pointer",
-                  }}
-                  onClick={() =>
-                    !opt.disabled &&
-                    setPayment(opt.value)
-                  }
-                >
+                {PAYMENT_OPTIONS.map((opt) => (
                   <div
-                    style={s.payRadio(
-                      payment === opt.value
-                    )}
+                    key={opt.value}
+                    style={{
+                      ...s.payOption(payment === opt.value),
+                      opacity: opt.disabled ? 0.5 : 1,
+                      cursor: opt.disabled ? "not-allowed" : "pointer",
+                    }}
+                    onClick={() => !opt.disabled && setPayment(opt.value)}
                   >
-                    {payment === opt.value && (
-                      <div style={s.payDot} />
-                    )}
+                    <div style={s.payRadio(payment === opt.value)}>
+                      {payment === opt.value && <div style={s.payDot} />}
+                    </div>
+                    <div>
+                      <p style={s.payLabel}>{opt.label}</p>
+                      <p style={s.payDesc}>{opt.desc}</p>
+                    </div>
                   </div>
+                ))}
+              </div>
+            )}
 
-                  <div>
-                    <p style={s.payLabel}>
-                      {opt.label}
-                    </p>
+            {error && step === 2 && (
+              <p style={{
+                color: "#c0392b",
+                fontSize: "12px",
+                marginBottom: "12px",
+                textAlign: "center",
+              }}>
+                Something went wrong. Please try again.
+              </p>
+            )}
 
-                    <p style={s.payDesc}>
-                      {opt.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <button style={s.submitBtn}>
-              Place Order —{" "}
-              {formatPKR(grandTotal)}
+            <button
+              style={{ ...s.submitBtn, opacity: loading ? 0.7 : 1 }}
+              onClick={handlePlaceOrder}
+              disabled={loading}
+            >
+              {loading
+                ? "Processing..."
+                : step === 1
+                ? "Continue to Payment"
+                : `Place Order — ${formatPKR(grandTotal)}`}
               <ArrowRight size={14} />
             </button>
           </div>
 
-          {/* RIGHT SIDE */}
+          {/* RIGHT SIDE - Order Summary */}
           <div>
             <div style={s.summaryBox(isMobile)}>
-              <h3 style={s.summaryTitle}>
-                Order Summary
-              </h3>
+              <h3 style={s.summaryTitle}>Order Summary</h3>
 
               {items.map((item) => (
-                <div
-                  key={`${item.id}-${item.size}`}
-                  style={s.summaryItem}
-                >
+                <div key={`${item.id}-${item.size}`} style={s.summaryItem}>
                   {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={s.summaryThumb}
-                    />
+                    <img src={item.image} alt={item.name} style={s.summaryThumb} />
                   ) : (
                     <div style={s.summaryThumb} />
                   )}
-
                   <div style={{ flex: 1 }}>
-                    <p style={s.summaryItemName}>
-                      {item.name}
-                    </p>
-
+                    <p style={s.summaryItemName}>{item.name}</p>
                     <p style={s.summaryItemSub}>
-                      {item.size &&
-                        `Size: ${item.size}`}
+                      {item.size && `Size: ${item.size}`}
                     </p>
                   </div>
-
                   <span style={s.summaryItemPrice}>
-                    {formatPKR(
-                      item.price * item.quantity
-                    )}
+                    {formatPKR(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
@@ -702,44 +780,22 @@ export default function CheckoutPage() {
               <div style={s.summaryDivider} />
 
               <div style={s.summaryRow}>
-                <span style={s.summaryKey}>
-                  Subtotal
-                </span>
-
-                <span style={s.summaryVal}>
-                  {formatPKR(total)}
-                </span>
+                <span style={s.summaryKey}>Subtotal</span>
+                <span style={s.summaryVal}>{formatPKR(total)}</span>
               </div>
 
               <div style={s.summaryRow}>
-                <span style={s.summaryKey}>
-                  Shipping
-                </span>
-
+                <span style={s.summaryKey}>Shipping</span>
                 <span style={s.summaryVal}>
-                  {shippingCost === 0
-                    ? "Free"
-                    : formatPKR(shippingCost)}
+                  {shippingCost === 0 ? "Free" : formatPKR(shippingCost)}
                 </span>
               </div>
 
               <div style={s.summaryDivider} />
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent:
-                    "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span style={s.summaryTotalKey}>
-                  Total
-                </span>
-
-                <span style={s.summaryTotalVal}>
-                  {formatPKR(grandTotal)}
-                </span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={s.summaryTotalKey}>Total</span>
+                <span style={s.summaryTotalVal}>{formatPKR(grandTotal)}</span>
               </div>
             </div>
           </div>
