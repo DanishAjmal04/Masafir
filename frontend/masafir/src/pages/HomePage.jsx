@@ -211,17 +211,34 @@ export default function HomePage() {
           }}
         />
 
+        {/* ── Shop Now button — bottom centre ── */}
         <div
           style={{
-            position:  "relative",
-            zIndex:    2,
-            minHeight: "100vh",
-            display:   "grid",
-            placeItems:"center",
-            textAlign: "center",
-            padding:   "0 18px",
+            position:       "relative",
+            zIndex:         2,
+            minHeight:      "100vh",
+            display:        "flex",
+            alignItems:     "flex-end",
+            justifyContent: "center",
+            paddingBottom:  "clamp(40px, 6vw, 72px)",
+            padding:        "0 18px",
           }}
-        />
+        >
+          <Link
+            to="/shop"
+            style={styles.ctaGhost}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#faf9f6";
+              e.currentTarget.style.color           = "#1a1a1a";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color           = "#faf9f6";
+            }}
+          >
+            Shop Now
+          </Link>
+        </div>
       </section>
 
       {/* ── FEATURED PRODUCTS ── */}
