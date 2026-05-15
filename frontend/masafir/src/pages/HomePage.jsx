@@ -6,7 +6,7 @@ import { useFeaturedProducts } from "../hooks/useProduct";
 import { addToCart } from "../store/cartSlice.js";
 import heroVideo from "../assets/car.mp4";
 import storyBg from "../assets/3.jpg";
-const videoURL="https://res.cloudinary.com/dyzzdnqs8/video/upload/q_auto/f_auto/v1778841953/car_cdeuav.mp4"
+const videoURL="https://res.cloudinary.com/dyzzdnqs8/image/upload/q_auto/f_auto/v1778635459/media/products/IMG_4094_sv5zls.jpg"
 const marqueeItems = [
   "New Arrivals",
   "Luxury Fabrics",
@@ -201,7 +201,7 @@ export default function HomePage() {
             objectFit:  "cover",
           }}
         >
-          <source src={videoURL} type="video/mp4" />
+          <source src={videoURL} type="image/jpg" />
         </video>
 
         <div
