@@ -6,7 +6,7 @@ import { useFeaturedProducts } from "../hooks/useProduct";
 import { addToCart } from "../store/cartSlice.js";
 import heroVideo from "../assets/car.mp4";
 import storyBg from "../assets/3.jpg";
-const videoURL="https://res.cloudinary.com/dyzzdnqs8/image/upload/q_auto/f_auto/v1778635459/media/products/IMG_4094_sv5zls.jpg"
+const videoURL="https://res.cloudinary.com/dyzzdnqs8/video/upload/q_auto/f_auto/v1778841953/car_cdeuav.mp4"
 const marqueeItems = [
   "New Arrivals",
   "Luxury Fabrics",
@@ -188,17 +188,21 @@ export default function HomePage() {
           overflow:  "hidden",
         }}
       >
-        <img
-  src="https://res.cloudinary.com/dyzzdnqs8/image/upload/q_auto,f_auto/v1778635459/media/products/IMG_4094_sv5zls.jpg"
-  alt="Masafir Hero"
-  style={{
-    position:  "absolute",
-    inset:     0,
-    width:     "100%",
-    height:    "100%",
-    objectFit: "cover",
-  }}
-/>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position:   "absolute",
+            inset:      0,
+            width:      "100%",
+            height:     "100%",
+            objectFit:  "cover",
+          }}
+        >
+          <source src={videoURL} type="video/mp4" />
+        </video>
 
         <div
           style={{
