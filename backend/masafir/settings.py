@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'cloudinary_storage',
     'cloudinary',
+    "newsletter",
+
 ]
 
 AUTH_USER_MODEL = "users.User"
