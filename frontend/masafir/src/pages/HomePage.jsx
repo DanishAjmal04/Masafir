@@ -188,21 +188,17 @@ export default function HomePage() {
           overflow:  "hidden",
         }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            position:   "absolute",
-            inset:      0,
-            width:      "100%",
-            height:     "100%",
-            objectFit:  "cover",
-          }}
-        >
-          <source src={videoURL} type="image/jpg" />
-        </video>
+        <img
+  src="https://res.cloudinary.com/dyzzdnqs8/image/upload/q_auto,f_auto/v1778635459/media/products/IMG_4094_sv5zls.jpg"
+  alt="Masafir Hero"
+  style={{
+    position:  "absolute",
+    inset:     0,
+    width:     "100%",
+    height:    "100%",
+    objectFit: "cover",
+  }}
+/>
 
         <div
           style={{
