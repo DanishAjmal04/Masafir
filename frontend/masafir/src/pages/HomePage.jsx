@@ -129,19 +129,10 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowMarquee(entry.intersectionRatio < 0.1);
-      },
-      {
-        threshold: [0, 0.1, 0.5, 1],
-      }
-    );
-
-    if (heroRef.current) observer.observe(heroRef.current);
-
-    return () => observer.disconnect();
-  }, []);
+  const onScroll = () => setShowMarquee(window.scrollY > 60);
+  window.addEventListener("scroll", onScroll);
+  return () => window.removeEventListener("scroll", onScroll);
+}, []);
 
   const handleQuickAdd = (item) => {
     dispatch(
