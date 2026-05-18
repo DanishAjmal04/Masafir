@@ -223,11 +223,13 @@ export default function HomePage() {
             justifyContent: "center",
             paddingBottom:  "clamp(40px, 6vw, 72px)",
             padding:        "90px 18px",
+            width:          "620px",  // ✅ yahan adjust karo
+            margin:         "0 auto",
           }}
         >
           <Link
             to="/shop"
-            style={styles.ctaGhost}
+            style={{ ...styles.ctaGhost, width: "220px", textAlign: "center" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#faf9f6";
               e.currentTarget.style.color           = "#1a1a1a";
