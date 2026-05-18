@@ -191,7 +191,6 @@ export default function Navbar() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {[
                 { label: 'Shop',    to: '/shop'    },
-                { label: 'Account', to: '/account' },
                 { label: 'Cart',    to: '/cart'    },
               ].map(({ label, to }, i, arr) => (
                 <Link
