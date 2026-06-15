@@ -84,7 +84,7 @@ const s = {
     fontSize: "10px",
     letterSpacing: "0.18em",
     textTransform: "uppercase",
-    color: "#9E7D52",
+    color: "#111111",
     fontWeight: 400,
     marginBottom: "8px",
   },
@@ -121,7 +121,7 @@ const s = {
     fontSize: "10px",
     letterSpacing: "0.12em",
     textTransform: "uppercase",
-    color: done ? "#9E7D52" : active ? "#0F0F0E" : "#C4B8A8",
+    color: done ? "#111111" : active ? "#0F0F0E" : "#C4B8A8",
     fontWeight: active ? 500 : 300,
     whiteSpace: "nowrap",
   }),
@@ -520,7 +520,7 @@ export default function CheckoutPage() {
               fontSize: "11px",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#9E7D52",
+              color: "#111111",
               margin: "16px 0 0",
             }}>
               #{orderNumber}
