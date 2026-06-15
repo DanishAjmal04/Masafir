@@ -372,7 +372,7 @@ clothing    should carry meaning, not just style.
           </p>
 
           <Link
-            to="/shop"
+            to="/Discover"
             style={styles.ctaGhost}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#faf9f6";
