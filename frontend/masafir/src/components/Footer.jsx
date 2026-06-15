@@ -159,7 +159,7 @@ export default function Footer() {
             <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#C4A882", fontWeight: 400, marginBottom: "8px", display: "block" }}>
               Stay in the loop
             </span>
-            <h3 style={{ fontFamily: "'Figtree', sans-serif", fontSize: "clamp(20px, 3vw, 28px)", fontWeight: 300, color: "#FDFBF7", margin: 0, lineHeight: 1.2 }}>
+            <h3 style={{ fontFamily: "'Figtree', sans-serif", fontSize: "clamp(20px, 3vw, 28px)", fontWeight: 300, color: "#Ffffff", margin: 0, lineHeight: 1.2 }}>
               Join the Masafir<br />community
             </h3>
           </div>
