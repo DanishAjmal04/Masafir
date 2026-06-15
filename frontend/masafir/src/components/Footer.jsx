@@ -5,14 +5,11 @@ import api from "../services/api";
 
 const LINKS = {
   Shop: [
-    { label: "New Arrivals", to: "/shop/new" },
-
-    { label: "volume-1 Collections",  to: "/shop/collections" },
-    { label: "Sale",         to: "/shop/sale" },
+    { label: "Volume-1", to: "/shop/new" },
+    { label: "Collections",  to: "/shop/collections" },
   ],
   Help: [
     { label: "Size Guide",   to: "/size-guide" },
-    { label: "Shipping Info",to: "/shipping" },
     { label: "Returns",      to: "/returns" },
     { label: "FAQs",         to: "/faqs" },
     { label: "Contact Us",   to: "/contact" },
