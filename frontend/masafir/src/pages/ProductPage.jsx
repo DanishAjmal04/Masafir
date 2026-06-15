@@ -236,9 +236,24 @@ export default function ProductPage() {
                   <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, color: sizeError ? "#ef4444" : "#3a3a3a", fontFamily: "'Figtree', sans-serif" }}>
                     {sizeError ? "Please select a size" : "Size"}
                   </p>
-                  <button style={{ fontSize: "11px", color: "#4d4d4d", textDecoration: "underline", textUnderlineOffset: "2px", fontWeight: 300, border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "4px 8px", fontFamily: "'Figtree', sans-serif" }}>
-                    Size Guide
-                  </button>
+                  <Link
+  to="/size-guide"
+  style={{
+    fontSize: "11px",
+    color: "#4d4d4d",
+    textDecoration: "underline",
+    textUnderlineOffset: "2px",
+    fontWeight: 300,
+    border: "none",
+    backgroundColor: "transparent",
+    cursor: "pointer",
+    borderRadius: RADIUS.sm,
+    padding: "4px 8px",
+    fontFamily: "'Figtree', sans-serif",
+  }}
+>
+  Size Guide
+</Link>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {sizes.map((size) => {

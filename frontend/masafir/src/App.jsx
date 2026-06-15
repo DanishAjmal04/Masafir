@@ -9,6 +9,8 @@ import LoginPage from "./pages/LoginPage";
 import AccountPage from "./pages/AccountPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import DiscoverPage from "./pages/DiscoverPage";
+import SizeGuidePage from "./pages/SizeGuidePage";
 
 export default function App() {
   return (
@@ -16,6 +18,8 @@ export default function App() {
       <Navbar />
       <main className="flex-1">
         <Routes>
+          <Route path="/size-guide" element={<SizeGuidePage />} />
+          <Route path="/discover" element={<DiscoverPage />} />
           <Route path="/account"  element={<PrivateRoute><AccountPage /></PrivateRoute>} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/login" element={<LoginPage />} />

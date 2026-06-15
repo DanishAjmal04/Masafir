@@ -6,9 +6,8 @@ import api from "../services/api";
 const LINKS = {
   Shop: [
     { label: "New Arrivals", to: "/shop/new" },
-    { label: "Women",        to: "/shop/women" },
-    { label: "Men",          to: "/shop/men" },
-    { label: "Collections",  to: "/shop/collections" },
+
+    { label: "volume-1 Collections",  to: "/shop/collections" },
     { label: "Sale",         to: "/shop/sale" },
   ],
   Help: [
