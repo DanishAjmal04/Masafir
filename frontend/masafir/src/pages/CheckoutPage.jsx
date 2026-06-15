@@ -137,7 +137,7 @@ const s = {
     flexShrink: 0,
     background: done ? "#0F0F0E" : active ? "#0F0F0E" : "none",
     color: done || active ? "#FDFBF7" : "#C4B8A8",
-    border: done || active ? "none" : "1px solid #C4B8A8",
+    border: done || active ? "none" : "1px solid #111111",
   }),
 
   stepLine: {
@@ -185,7 +185,7 @@ const s = {
 
   input: {
     width: "100%",
-    border: "1px solid #E5D5BC",
+    border: "1px solid #111111",
     background: "#FDFBF7",
     padding: "12px 16px",
     fontSize: "13px",
@@ -197,7 +197,7 @@ const s = {
 
   select: {
     width: "100%",
-    border: "1px solid #E5D5BC",
+    border: "1px solid #111111",
     background: "#FDFBF7",
     padding: "12px 16px",
     fontSize: "13px",
@@ -209,7 +209,7 @@ const s = {
 
   textarea: {
     width: "100%",
-    border: "1px solid #E5D5BC",
+    border: "1px solid #111111",
     background: "#FDFBF7",
     padding: "12px 16px",
     fontSize: "13px",
@@ -281,7 +281,7 @@ const s = {
 
   summaryBox: (isMobile) => ({
     background: "#F9F5EE",
-    border: "1px solid #E5D5BC",
+    border: "1px solid #111111",
     padding: isMobile ? "22px" : "28px",
     position: isMobile ? "relative" : "sticky",
     top: "120px",
