@@ -282,8 +282,7 @@ export default function HomePage() {
                 <ProductCard
                   key={item.id}
                   item={item}
-                  isAdded={quickAddId === item.id}
-                  onQuickAdd={() => handleQuickAdd(item)}
+                  
                   isMobile={isMobile}
                 />
               ))}
