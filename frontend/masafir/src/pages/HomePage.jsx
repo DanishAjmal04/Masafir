@@ -366,6 +366,7 @@ export default function HomePage() {
             }}
           >
             Masafir was created from a simple belief:
+            <br />
 clothing    should carry meaning, not just style.
             Rooted in the richness of South Asian heritage and shaped by the rhythm of modern life, Masafir exists for those who live between tradition and today the wanderers, the builders, the storytellers.
           </p>
