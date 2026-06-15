@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import discover1 from "../assets/discover-1.jpeg";
 import discover2 from "../assets/discover-2.jpeg";
 import discover3 from "../assets/discover-3.jpeg";
-import discover4 from "../assets/discover-4.jpeg";   
+import discover4 from "../assets/discover-4.jpeg";
+
 const SECTIONS = [
   {
     id: 1,
@@ -68,6 +70,14 @@ const SECTIONS = [
 ];
 
 export default function DiscoverPage() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -80,7 +90,7 @@ export default function DiscoverPage() {
       <div style={{
         maxWidth: "1152px",
         margin: "0 auto",
-        padding: "64px 48px 0",
+        padding: isMobile ? "40px 20px 0" : "64px 48px 0",
         textAlign: "center",
       }}>
         <span style={{
@@ -94,11 +104,11 @@ export default function DiscoverPage() {
         </span>
 
         <h1 style={{
-          fontFamily: "'Figtree', serif",
-          fontSize: "clamp(36px, 5vw, 64px)",
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: isMobile ? "36px" : "clamp(36px, 5vw, 64px)",
           fontWeight: 300,
           color: "#0F0F0E",
-          margin: "20px 0 24px",
+          margin: "16px 0 20px",
           lineHeight: 1.15,
         }}>
           Clothing that travels<br />as far as you do.
@@ -109,7 +119,7 @@ export default function DiscoverPage() {
           color: "#666",
           maxWidth: "420px",
           lineHeight: "1.9",
-          margin: "0 auto 64px",
+          margin: "0 auto 48px",
         }}>
           Masafir was born from a love of journeys — the places we go,
           the people we meet, and the stories we carry back.
@@ -120,19 +130,24 @@ export default function DiscoverPage() {
       </div>
 
       {/* Alternating Sections */}
-      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 48px" }}>
+      <div style={{
+        maxWidth: "1152px",
+        margin: "0 auto",
+        padding: isMobile ? "0 0" : "0 48px",
+      }}>
         {SECTIONS.map((sec, i) => (
           <div key={sec.id}>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: "0",
-              minHeight: "520px",
+              minHeight: isMobile ? "auto" : "520px",
             }}>
-              {/* Image */}
+              {/* Image — mobile pe hamesha upar */}
               <div style={{
-                order: sec.imageFirst ? 1 : 2,
+                order: isMobile ? 1 : sec.imageFirst ? 1 : 2,
                 overflow: "hidden",
+                height: isMobile ? "280px" : "auto",
               }}>
                 <img
                   src={sec.image}
@@ -146,10 +161,10 @@ export default function DiscoverPage() {
                 />
               </div>
 
-              {/* Content */}
+              {/* Content — mobile pe hamesha neeche */}
               <div style={{
-                order: sec.imageFirst ? 2 : 1,
-                padding: "64px 56px",
+                order: isMobile ? 2 : sec.imageFirst ? 2 : 1,
+                padding: isMobile ? "36px 20px" : "64px 56px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -160,18 +175,18 @@ export default function DiscoverPage() {
                   letterSpacing: "0.22em",
                   textTransform: "uppercase",
                   color: "#111111",
-                  marginBottom: "20px",
+                  marginBottom: "16px",
                   display: "block",
                 }}>
                   {sec.tag}
                 </span>
 
                 <h2 style={{
-                  fontFamily: "'Figtree', serif",
-                  fontSize: "clamp(24px, 2.8vw, 36px)",
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: isMobile ? "28px" : "clamp(24px, 2.8vw, 36px)",
                   fontWeight: 300,
                   color: "#0F0F0E",
-                  margin: "0 0 24px",
+                  margin: "0 0 20px",
                   lineHeight: 1.25,
                   whiteSpace: "pre-line",
                 }}>
@@ -205,7 +220,7 @@ export default function DiscoverPage() {
                         gap: "10px",
                         marginBottom: "4px",
                       }}>
-                        <span style={{ color: "#111111", marginTop: "2px" }}>•</span>
+                        <span style={{ color: "#9E7D52", marginTop: "2px" }}>•</span>
                         {b}
                       </li>
                     ))}
@@ -237,7 +252,6 @@ export default function DiscoverPage() {
               </div>
             </div>
 
-            {/* Divider between sections */}
             {i < SECTIONS.length - 1 && (
               <div style={{ height: "1px", background: "#E5D5BC" }} />
             )}
@@ -245,7 +259,56 @@ export default function DiscoverPage() {
         ))}
       </div>
 
-      
+      {/* Footer Banner */}
+      <div style={{
+        background: "#0F0F0E",
+        padding: isMobile ? "48px 24px" : "64px 48px",
+        textAlign: "center",
+        marginTop: isMobile ? "0" : "0",
+      }}>
+        <span style={{
+          fontSize: "10px",
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "#9E7D52",
+          display: "block",
+          marginBottom: "16px",
+        }}>
+          ✦ Wear The Journey ✦
+        </span>
+
+        <p style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: isMobile ? "22px" : "clamp(18px, 2.5vw, 28px)",
+          fontWeight: 300,
+          color: "#FDFBF7",
+          margin: "0 0 36px",
+          lineHeight: 1.5,
+        }}>
+          Because you are not standing still —<br />
+          and neither is what you wear.
+        </p>
+
+        <Link
+          to="/shop"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "#FDFBF7",
+            color: "#0F0F0E",
+            padding: "14px 36px",
+            fontSize: "11px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            borderRadius: "10px",
+          }}
+        >
+          Browse Collection
+          <ArrowRight size={13} />
+        </Link>
+      </div>
 
     </div>
   );

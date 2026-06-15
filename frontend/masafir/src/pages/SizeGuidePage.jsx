@@ -1,5 +1,15 @@
+import { useState, useEffect } from "react";
 import sizechart from "../assets/sizechart.jpeg";
+
 export default function SizeGuidePage() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -11,7 +21,7 @@ export default function SizeGuidePage() {
       <div style={{
         maxWidth: "900px",
         margin: "0 auto",
-        padding: "48px 24px 0",
+        padding: isMobile ? "32px 16px 0" : "48px 24px 0",
       }}>
 
         <span style={{
@@ -27,22 +37,21 @@ export default function SizeGuidePage() {
         </span>
 
         <h1 style={{
-          fontFamily: "'Figtree', serif",
-          fontSize: "40px",
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: isMobile ? "32px" : "40px",
           fontWeight: 300,
           color: "#0F0F0E",
-          margin: "0 0 40px",
+          margin: "0 0 24px",
         }}>
           Size Guide
         </h1>
 
         <div style={{
           height: "1px",
-          background: "#E5D5BC",
-          marginBottom: "48px",
+          background: "#0F0F0E",  // ← golden se black
+          marginBottom: isMobile ? "28px" : "48px",
         }} />
 
-        {/* Yahan apni size chart image paste karo */}
         <img
           src={sizechart}
           alt="Masafir Size Guide"
@@ -50,7 +59,7 @@ export default function SizeGuidePage() {
             width: "100%",
             height: "auto",
             display: "block",
-            borderRadius: "12px",
+            borderRadius: isMobile ? "8px" : "12px",
           }}
         />
 
