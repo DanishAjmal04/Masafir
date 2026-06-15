@@ -205,32 +205,47 @@ export default function HomePage() {
 
         {/* ── Shop Now button — bottom centre ── */}
         <div
-          style={{
-            position:       "relative",
-            zIndex:         2,
-            minHeight:      "100vh",
-            display:        "flex",
-            alignItems:     "flex-end",
-            justifyContent: "center",
-            paddingBottom:  "clamp(40px, 6vw, 72px)",
-            padding:        "90px 18px",
-          }}
-        >
-          <Link
-            to="/shop"
-            style={{ ...styles.ctaGhost, width: "220px", textAlign: "center" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#faf9f6";
-              e.currentTarget.style.color           = "#1a1a1a";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color           = "#faf9f6";
-            }}
-          >
-            Shop Now
-          </Link>
-        </div>
+  style={{
+    position:       "relative",
+    zIndex:         2,
+    minHeight:      "100vh",
+    display:        "flex",
+    flexDirection:  "column",
+    alignItems:     "center",
+    justifyContent: "flex-end",
+    padding:        "90px 18px",
+  }}
+>
+  <p
+    style={{
+      fontFamily:    "'Figtree', sans-serif",
+      fontSize:      "clamp(14px, 1.6vw, 18px)",
+      fontWeight:    100,
+      color:         "#faf9f6",
+      letterSpacing: "0.08em",
+      textAlign:     "center",
+      marginBottom:  "20px",
+      opacity:       0.85,
+    }}
+  >
+    Weaving South Asia's Heritage into Modern Attire
+  </p>
+
+  <Link
+    to="/shop"
+    style={{ ...styles.ctaGhost, width: "220px", textAlign: "center" }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = "#faf9f6";
+      e.currentTarget.style.color           = "#1a1a1a";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = "transparent";
+      e.currentTarget.style.color           = "#faf9f6";
+    }}
+  >
+    Shop Now
+  </Link>
+</div>
       </section>
 
       {/* ── FEATURED PRODUCTS ── */}
