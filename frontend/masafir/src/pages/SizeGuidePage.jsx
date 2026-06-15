@@ -4,7 +4,7 @@ export default function SizeGuidePage() {
     <div style={{
       minHeight: "100vh",
       background: "#FDFBF7",
-      fontFamily: "'Jost', sans-serif",
+      fontFamily: "'Figtree', sans-serif",
       paddingTop: "97px",
       paddingBottom: "80px",
     }}>
@@ -19,7 +19,7 @@ export default function SizeGuidePage() {
           fontSize: "10px",
           letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: "#9E7D52",
+          color: "#111111",
           fontWeight: 400,
           marginBottom: "12px",
         }}>
@@ -27,7 +27,7 @@ export default function SizeGuidePage() {
         </span>
 
         <h1 style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "'Figtree', serif",
           fontSize: "40px",
           fontWeight: 300,
           color: "#0F0F0E",

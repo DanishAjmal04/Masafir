@@ -1,216 +1,252 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import discover1 from "../assets/discover-1.jpeg";
+import discover2 from "../assets/discover-2.jpeg";
+import discover3 from "../assets/discover-3.jpeg";
+import discover4 from "../assets/discover-4.jpeg";   
+const SECTIONS = [
+  {
+    id: 1,
+    image: discover1,
+    imageFirst: true,
+    tag: "Where It Began",
+    title: "Every journey begins\nwith memory.",
+    content: [
+      "We grew up surrounded by the colors of South Asia — the texture of handmade fabrics, the depth of cultural patterns, the pride woven into every thread. But we also lived in a fast-moving world where identity is constantly evolving.",
+      "Masafir was born in that intersection — between where we come from and where we are going.",
+    ],
+    bullets: [],
+    footer: null,
+  },
+  {
+    id: 2,
+    image: discover2,
+    imageFirst: false,
+    tag: "What We Believe",
+    title: "Heritage is not something\nto preserve in silence.",
+    content: [
+      "We believe heritage is not something to preserve in silence — it is something to wear forward.",
+      "Every piece is designed with intention:",
+    ],
+    bullets: [
+      "Inspired by South Asian cultural elements",
+      "Refined with modern silhouettes",
+      "Crafted for everyday movement and expression",
+    ],
+    footer: "Slow fashion. Honest materials. Timeless identity.",
+  },
+  {
+    id: 3,
+    image: discover3,
+    imageFirst: true,
+    tag: "The Modern Journey",
+    title: "Not bound to one place\nor one era.",
+    content: [
+      "Masafir is not bound to one place or one era. It belongs to those who:",
+    ],
+    bullets: [
+      "Travel between cities and cultures",
+      "Carry their roots with pride",
+      "Express themselves without compromise",
+    ],
+    footer: "From tradition to street, from east to west — Masafir moves with you.",
+  },
+  {
+    id: 4,
+    image: discover4,
+    imageFirst: false,
+    tag: "Our Mission",
+    title: "We craft pieces\nof journey.",
+    content: [
+      "To redefine South Asian fashion for a global generation — not as nostalgia, but as living identity.",
+      "We don't just make clothing.",
+    ],
+    bullets: [],
+    footer: null,
+    bold: "We craft pieces of journey.",
+  },
+];
 
 export default function DiscoverPage() {
   return (
     <div style={{
       minHeight: "100vh",
       background: "#FDFBF7",
-      fontFamily: "'Jost', sans-serif",
+      fontFamily: "'Figtree', sans-serif",
       paddingTop: "97px",
     }}>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <div style={{
         maxWidth: "1152px",
         margin: "0 auto",
         padding: "64px 48px 0",
+        textAlign: "center",
       }}>
         <span style={{
-          display: "block",
           fontSize: "10px",
-          letterSpacing: "0.18em",
+          letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "#9E7D52",
+          color: "#111111",
           fontWeight: 400,
-          marginBottom: "16px",
         }}>
-          Masafir
+          ✦ Our Story ✦
         </span>
 
         <h1 style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: "clamp(40px, 6vw, 72px)",
+          fontFamily: "'Figtree', serif",
+          fontSize: "clamp(36px, 5vw, 64px)",
           fontWeight: 300,
           color: "#0F0F0E",
-          margin: "0 0 24px",
-          lineHeight: 1.1,
+          margin: "20px 0 24px",
+          lineHeight: 1.15,
         }}>
-          Discover
+          Clothing that travels<br />as far as you do.
         </h1>
 
         <p style={{
-          fontSize: "14px",
+          fontSize: "13px",
           color: "#666",
-          maxWidth: "480px",
+          maxWidth: "420px",
           lineHeight: "1.9",
-          marginBottom: "64px",
+          margin: "0 auto 64px",
         }}>
-          Stories, inspirations, and the world behind Masafir — 
-          where every piece carries a journey.
+          Masafir was born from a love of journeys — the places we go,
+          the people we meet, and the stories we carry back.
+          Every piece is designed to move with you.
         </p>
 
-        {/* Divider */}
-        <div style={{
-          height: "1px",
-          background: "#E5D5BC",
-          marginBottom: "64px",
-        }} />
+        <div style={{ height: "1px", background: "#E5D5BC" }} />
       </div>
 
-      {/* Stories Grid — baad mein yahan content aayega */}
-      <div style={{
-        maxWidth: "1152px",
-        margin: "0 auto",
-        padding: "0 48px 96px",
-      }}>
-
-        {/* Placeholder cards — apni stories se replace karna */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-          gap: "40px",
-        }}>
-          {STORIES.map((story) => (
-            <StoryCard key={story.id} story={story} />
-          ))}
-        </div>
-
-        {/* Agar abhi koi story nahi */}
-        {STORIES.length === 0 && (
-          <div style={{
-            textAlign: "center",
-            padding: "80px 0",
-          }}>
-            <p style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "28px",
-              fontWeight: 300,
-              color: "#C4B8A8",
-              marginBottom: "24px",
+      {/* Alternating Sections */}
+      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 48px" }}>
+        {SECTIONS.map((sec, i) => (
+          <div key={sec.id}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0",
+              minHeight: "520px",
             }}>
-              Stories coming soon
-            </p>
-            <Link
-              to="/shop"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                fontSize: "11px",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "#0F0F0E",
-                textDecoration: "none",
-                borderBottom: "1px solid #0F0F0E",
-                paddingBottom: "2px",
-              }}
-            >
-              Browse Collection
-              <ArrowRight size={12} />
-            </Link>
+              {/* Image */}
+              <div style={{
+                order: sec.imageFirst ? 1 : 2,
+                overflow: "hidden",
+              }}>
+                <img
+                  src={sec.image}
+                  alt={sec.tag}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+
+              {/* Content */}
+              <div style={{
+                order: sec.imageFirst ? 2 : 1,
+                padding: "64px 56px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                background: i % 2 === 0 ? "#FDFBF7" : "#F9F5EE",
+              }}>
+                <span style={{
+                  fontSize: "10px",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "#111111",
+                  marginBottom: "20px",
+                  display: "block",
+                }}>
+                  {sec.tag}
+                </span>
+
+                <h2 style={{
+                  fontFamily: "'Figtree', serif",
+                  fontSize: "clamp(24px, 2.8vw, 36px)",
+                  fontWeight: 300,
+                  color: "#0F0F0E",
+                  margin: "0 0 24px",
+                  lineHeight: 1.25,
+                  whiteSpace: "pre-line",
+                }}>
+                  {sec.title}
+                </h2>
+
+                {sec.content.map((para, j) => (
+                  <p key={j} style={{
+                    fontSize: "13px",
+                    color: "#3A3A36",
+                    lineHeight: "1.9",
+                    margin: "0 0 12px",
+                  }}>
+                    {para}
+                  </p>
+                ))}
+
+                {sec.bullets.length > 0 && (
+                  <ul style={{
+                    margin: "8px 0 16px",
+                    paddingLeft: "0",
+                    listStyle: "none",
+                  }}>
+                    {sec.bullets.map((b, j) => (
+                      <li key={j} style={{
+                        fontSize: "13px",
+                        color: "#3A3A36",
+                        lineHeight: "1.9",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "10px",
+                        marginBottom: "4px",
+                      }}>
+                        <span style={{ color: "#111111", marginTop: "2px" }}>•</span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {sec.footer && (
+                  <p style={{
+                    fontSize: "13px",
+                    color: "#0F0F0E",
+                    lineHeight: "1.9",
+                    fontStyle: "italic",
+                    marginTop: "8px",
+                  }}>
+                    {sec.footer}
+                  </p>
+                )}
+
+                {sec.bold && (
+                  <p style={{
+                    fontSize: "13px",
+                    color: "#0F0F0E",
+                    fontWeight: 500,
+                    marginTop: "4px",
+                  }}>
+                    {sec.bold}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Divider between sections */}
+            {i < SECTIONS.length - 1 && (
+              <div style={{ height: "1px", background: "#E5D5BC" }} />
+            )}
           </div>
-        )}
+        ))}
       </div>
+
+      
+
     </div>
   );
 }
-
-// Story Card Component
-function StoryCard({ story }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        cursor: "pointer",
-        transition: "transform 0.3s ease",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-      }}
-    >
-      {/* Image */}
-      <div style={{
-        width: "100%",
-        aspectRatio: "4/5",
-        background: "#F0E8DC",
-        borderRadius: "12px",
-        overflow: "hidden",
-        marginBottom: "20px",
-      }}>
-        {story.image && (
-          <img
-            src={story.image}
-            alt={story.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "transform 0.5s ease",
-              transform: hovered ? "scale(1.04)" : "scale(1)",
-            }}
-          />
-        )}
-      </div>
-
-      {/* Meta */}
-      <span style={{
-        fontSize: "10px",
-        letterSpacing: "0.15em",
-        textTransform: "uppercase",
-        color: "#9E7D52",
-      }}>
-        {story.category}
-      </span>
-
-      <h3 style={{
-        fontFamily: "'Cormorant Garamond', serif",
-        fontSize: "22px",
-        fontWeight: 300,
-        color: "#0F0F0E",
-        margin: "8px 0 10px",
-        lineHeight: 1.3,
-      }}>
-        {story.title}
-      </h3>
-
-      <p style={{
-        fontSize: "12px",
-        color: "#666",
-        lineHeight: "1.8",
-        marginBottom: "16px",
-      }}>
-        {story.excerpt}
-      </p>
-
-      <span style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "6px",
-        fontSize: "11px",
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        color: "#0F0F0E",
-        borderBottom: "1px solid #E5D5BC",
-        paddingBottom: "2px",
-      }}>
-        Read More
-        <ArrowRight size={11} />
-      </span>
-    </div>
-  );
-}
-
-// Yahan apni stories add karo
-const STORIES = [
-  // Example:
-  // {
-  //   id: 1,
-  //   category: "Heritage",
-  //   title: "The Art of Pakistani Craft",
-  //   excerpt: "A journey through the hands that weave our fabric.",
-  //   image: "/images/story-1.jpg",
-  // },
-];
