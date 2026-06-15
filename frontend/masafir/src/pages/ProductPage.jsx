@@ -279,34 +279,39 @@ export default function ProductPage() {
             )}
 
             {/* Qty + Add to Cart */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "12px" }}>
-              <div style={{ display: "flex", alignItems: "center", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, overflow: "hidden", flexShrink: 0 }}>
-                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}
-                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d", opacity: quantity <= 1 ? 0.3 : 1 }}>
-                  <Minus size={11} />
-                </button>
-                <span style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", color: "#1a1a1a", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>
-                  {quantity}
-                </span>
-                <button onClick={() => setQuantity((q) => q + 1)}
-                  style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d" }}>
-                  <Plus size={11} />
-                </button>
-              </div>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
 
-              <button onClick={handleAddToCart}
-                style={{ flex: 1, padding: "12px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif" }}>
-                {added ? "✦ Added to Cart" : "Add to Cart"}
-              </button>
-              <button
-              onClick={handleBuyNow}
-              style={{ width: "100%", padding: "14px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "1px solid #1a1a1a", borderRadius: RADIUS.md, cursor: "pointer", backgroundColor: "transparent", color: "#1a1a1a", fontFamily: "'Figtree', sans-serif", marginBottom: "16px", transition: "all 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a1a1a"; e.currentTarget.style.color = "#faf9f6"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a1a1a"; }}
-            >
-              Buy Now
-            </button>
-            </div>
+  {/* Quantity */}
+  <div style={{ display: "flex", alignItems: "center", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, overflow: "hidden", flexShrink: 0, width: "110px" }}>
+    <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}
+      style={{ flex: 1, height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d", opacity: quantity <= 1 ? 0.3 : 1 }}>
+      <Minus size={11} />
+    </button>
+    <span style={{ width: "32px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", color: "#1a1a1a", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>
+      {quantity}
+    </span>
+    <button onClick={() => setQuantity((q) => q + 1)}
+      style={{ flex: 1, height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d" }}>
+      <Plus size={11} />
+    </button>
+  </div>
+
+  {/* Add to Cart */}
+  <button onClick={handleAddToCart}
+    style={{ width: "110px", height: "48px", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 400, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif", flexShrink: 0 }}>
+    {added ? "✦ Added" : "Add to Cart"}
+  </button>
+
+  {/* Buy Now */}
+  <button onClick={handleBuyNow}
+    style={{ width: "110px", height: "48px", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 400, border: "1px solid #1a1a1a", borderRadius: RADIUS.md, cursor: "pointer", backgroundColor: "transparent", color: "#1a1a1a", fontFamily: "'Figtree', sans-serif", flexShrink: 0, transition: "all 0.2s" }}
+    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a1a1a"; e.currentTarget.style.color = "#faf9f6"; }}
+    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a1a1a"; }}
+  >
+    Buy Now
+  </button>
+
+</div>
 
             {/* Buy Now */}
             
