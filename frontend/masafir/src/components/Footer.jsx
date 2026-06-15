@@ -21,10 +21,8 @@ const LINKS = {
 };
 
 const SOCIALS = [
-  { Icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { Icon: Facebook,  href: "https://facebook.com",  label: "Facebook"  },
-  { Icon: Twitter,   href: "https://twitter.com",   label: "Twitter"   },
-  { Icon: Youtube,   href: "https://youtube.com",   label: "YouTube"   },
+  { Icon: Instagram, href: "https://www.instagram.com/masafirofficial?igsh=NHVmYW9uaDJxcXB6", label: "Instagram" },
+  { Icon: Facebook,  href: "https://www.facebook.com/share/17rtYR8r7x/",  label: "Facebook"  },
 ];
 
 export default function Footer() {
@@ -98,10 +96,10 @@ export default function Footer() {
               </span>
             </Link>
             <span style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(253,251,247,0.4)", fontWeight: 300, marginBottom: "20px", display: "block" }}>
-              Wear the Journey
+              Heritage in Every Thread
             </span>
             <p style={{ fontSize: "12px", color: "rgba(253,251,247,0.5)", fontWeight: 300, lineHeight: 1.8, margin: "0 0 24px" }}>
-              Crafted for those who move through the world with intention. Slow fashion, natural fabrics, and timeless silhouettes — made in Pakistan.
+              Crafted for those who move through the world with intention. Made in Pakistan with natural fabrics and effortlessly timeless designs.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               {SOCIALS.map(({ Icon, href, label }) => (

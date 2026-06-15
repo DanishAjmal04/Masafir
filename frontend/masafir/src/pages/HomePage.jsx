@@ -61,7 +61,7 @@ const styles = {
     alignItems: "center",
     gap: 8,
     paddingBottom: 4,
-    borderBottom: "1px solid #111111",
+    borderBottom: "1px solid #555555",
     fontFamily: "'Figtree', sans-serif",
   },
   ctaGhost: {
@@ -332,7 +332,7 @@ export default function HomePage() {
           <p
             style={{
               ...styles.sectionLabel,
-              color:        "#bea37e",
+              color:        "#ffffff",
               marginBottom: 20,
             }}
           >
@@ -365,9 +365,9 @@ export default function HomePage() {
               fontFamily: "'Figtree', sans-serif",
             }}
           >
-            Masafir was born from a love of journeys — the places we go, the
-            people we meet, and the stories we carry back. Every piece is
-            designed to move with you.
+            Masafir was created from a simple belief:
+clothing    should carry meaning, not just style.
+            Rooted in the richness of South Asian heritage and shaped by the rhythm of modern life, Masafir exists for those who live between tradition and today the wanderers, the builders, the storytellers.
           </p>
 
           <Link
