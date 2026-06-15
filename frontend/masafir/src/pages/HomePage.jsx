@@ -508,7 +508,7 @@ function ProductCard({ item, isAdded, onQuickAdd, isMobile }) {
         <p style={{ margin: "0 0 5px", fontSize: 13, lineHeight: 1.45, color: "#2a2a2a", fontWeight: 550, fontFamily: "'Figtree', sans-serif" }}>
           {item.name}
         </p>
-        <p style={{ margin: 0, fontSize: 12, letterSpacing: "0.03em", color: "#9a7d57", fontWeight: 550, fontFamily: "'Figtree', sans-serif" }}>
+        <p style={{ margin: 0, fontSize: 12, letterSpacing: "0.03em", color: "#111111", fontWeight: 550, fontFamily: "'Figtree', sans-serif" }}>
           {`Rs ${Number(item.price || 0).toLocaleString("en-PK")}`}
         </p>
       </Link>
