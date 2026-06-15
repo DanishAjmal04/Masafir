@@ -37,7 +37,7 @@ export default function SizeGuidePage() {
         </span>
 
         <h1 style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "'Figtree', serif",
           fontSize: isMobile ? "32px" : "40px",
           fontWeight: 300,
           color: "#0F0F0E",
