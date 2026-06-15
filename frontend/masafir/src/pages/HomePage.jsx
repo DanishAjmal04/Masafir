@@ -219,8 +219,8 @@ export default function HomePage() {
   <p
     style={{
       fontFamily:    "'Figtree', sans-serif",
-      fontSize:      "clamp(14px, 1.6vw, 18px)",
-      fontWeight:    400,
+      fontSize:      "clamp(20px, 1.6vw, 18px)",
+      fontWeight:    200,
       color:         "#faf9f6",
       letterSpacing: "0.08em",
       textAlign:     "center",
