@@ -8,10 +8,9 @@ import heroVideo from "../assets/car.mp4";
 import storyBg from "../assets/3.jpg";
 const videoURL="https://res.cloudinary.com/dyzzdnqs8/video/upload/q_auto/f_auto/v1778841953/car_cdeuav.mp4"
 const marqueeItems = [
-  "New Arrivals",
+  "Limited Stock",
   "Luxury Fabrics",
-  "Slow Fashion",
-  "Crafted in Pakistan",
+  "Crafted in پـــاکــستان",
   "Free Shipping Over PKR 5,000",
 ];
 
