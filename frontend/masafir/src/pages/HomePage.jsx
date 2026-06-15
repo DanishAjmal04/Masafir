@@ -53,7 +53,7 @@ const styles = {
   },
   viewAll: {
     textDecoration: "none",
-    color: "#1a1a1a",
+    color: "#111111",
     fontSize: 11,
     textTransform: "uppercase",
     letterSpacing: "0.15em",
@@ -61,12 +61,12 @@ const styles = {
     alignItems: "center",
     gap: 8,
     paddingBottom: 4,
-    borderBottom: "1px solid #d5c8b6",
+    borderBottom: "1px solid #111111",
     fontFamily: "'Figtree', sans-serif",
   },
   ctaGhost: {
     border: "1px solid #faf9f6",
-    color: "#faf9f6",
+    color: "#111111",
     padding: "12px 30px",
     fontSize: 11,
     letterSpacing: "0.15em",
@@ -263,16 +263,9 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <Link
-  to="/shop"
-  style={{
-    ...styles.viewAll,
-    textDecoration: "underline",
-    textDecorationColor: "black",
-  }}
->
-  View All <ArrowRight size={12} />
-</Link>
+            <Link to="/shop" style={styles.viewAll}>
+              View All <ArrowRight size={12} />
+            </Link>
           </div>
 
           {featured.length === 0 ? (
