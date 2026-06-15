@@ -298,10 +298,7 @@ export default function ProductPage() {
                 style={{ flex: 1, padding: "12px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif" }}>
                 {added ? "✦ Added to Cart" : "Add to Cart"}
               </button>
-            </div>
-
-            {/* Buy Now */}
-            <button
+              <button
               onClick={handleBuyNow}
               style={{ width: "100%", padding: "14px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "1px solid #1a1a1a", borderRadius: RADIUS.md, cursor: "pointer", backgroundColor: "transparent", color: "#1a1a1a", fontFamily: "'Figtree', sans-serif", marginBottom: "16px", transition: "all 0.2s" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a1a1a"; e.currentTarget.style.color = "#faf9f6"; }}
@@ -309,6 +306,10 @@ export default function ProductPage() {
             >
               Buy Now
             </button>
+            </div>
+
+            {/* Buy Now */}
+            
 
             <p style={{ fontSize: "11px", color: "#4d4d4d", fontWeight: 300, marginBottom: "28px", fontFamily: "'Figtree', sans-serif" }}>
               Free shipping on orders over PKR 5,000
