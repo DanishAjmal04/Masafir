@@ -220,7 +220,7 @@ export default function HomePage() {
     style={{
       fontFamily:    "'Figtree', sans-serif",
       fontSize:      "clamp(14px, 1.6vw, 18px)",
-      fontWeight:    100,
+      fontWeight:    400,
       color:         "#faf9f6",
       letterSpacing: "0.08em",
       textAlign:     "center",
@@ -228,7 +228,7 @@ export default function HomePage() {
       opacity:       0.85,
     }}
   >
-    Weaving South Asia's Heritage into Modern Attire
+    Weaving South Asia's Heritage<br />into Modern Attire
   </p>
 
   <Link
