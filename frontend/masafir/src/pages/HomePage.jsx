@@ -53,7 +53,7 @@ const styles = {
   },
   viewAll: {
     textDecoration: "none",
-    color: "#111111",
+    color: "#1a1a1a",
     fontSize: 11,
     textTransform: "uppercase",
     letterSpacing: "0.15em",
@@ -66,7 +66,7 @@ const styles = {
   },
   ctaGhost: {
     border: "1px solid #faf9f6",
-    color: "#111111",
+    color: "#faf9f6",
     padding: "12px 30px",
     fontSize: 11,
     letterSpacing: "0.15em",
