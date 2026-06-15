@@ -160,7 +160,7 @@ export default function Navbar() {
                   minWidth:        '16px',
                   height:          '16px',
                   padding:         '0 4px',
-                  backgroundColor: '#b89870',
+                  backgroundColor: '#111111',
                   color:           '#faf9f6',
                   fontSize:        '9px',
                   borderRadius:    '50%',
