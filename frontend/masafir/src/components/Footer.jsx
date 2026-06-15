@@ -156,7 +156,7 @@ export default function Footer() {
           }}
         >
           <div style={{ flexShrink: 0 }}>
-            <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#C4A882", fontWeight: 400, marginBottom: "8px", display: "block" }}>
+            <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#ffffff", fontWeight: 400, marginBottom: "8px", display: "block" }}>
               Stay in the loop
             </span>
             <h3 style={{ fontFamily: "'Figtree', sans-serif", fontSize: "clamp(20px, 3vw, 28px)", fontWeight: 300, color: "#Ffffff", margin: 0, lineHeight: 1.2 }}>
