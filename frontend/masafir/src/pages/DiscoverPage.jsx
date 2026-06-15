@@ -14,8 +14,8 @@ const SECTIONS = [
     tag: "Where It Began",
     title: "Every journey begins\nwith memory.",
     content: [
-      "We grew up surrounded by the colors of South Asia — the texture of handmade fabrics, the depth of cultural patterns, the pride woven into every thread. But we also lived in a fast-moving world where identity is constantly evolving.",
-      "Masafir was born in that intersection — between where we come from and where we are going.",
+      "We grew up surrounded by the colors of South Asia the texture of handmade fabrics, the depth of cultural patterns, the pride woven into every thread. But we also lived in a fast-moving world where identity is constantly evolving.",
+      "Masafir was born in that intersection between where we come from and where we are going.",
     ],
     bullets: [],
     footer: null,
@@ -27,7 +27,7 @@ const SECTIONS = [
     tag: "What We Believe",
     title: "Heritage is not something\nto preserve in silence.",
     content: [
-      "We believe heritage is not something to preserve in silence — it is something to wear forward.",
+      "We believe heritage is not something to preserve in silence it is something to wear forward.",
       "Every piece is designed with intention:",
     ],
     bullets: [
@@ -51,7 +51,7 @@ const SECTIONS = [
       "Carry their roots with pride",
       "Express themselves without compromise",
     ],
-    footer: "From tradition to street, from east to west — Masafir moves with you.",
+    footer: "From tradition to street, from east to west Masafir moves with you.",
   },
   {
     id: 4,
@@ -60,7 +60,7 @@ const SECTIONS = [
     tag: "Our Mission",
     title: "We craft pieces\nof journey.",
     content: [
-      "To redefine South Asian fashion for a global generation — not as nostalgia, but as living identity.",
+      "To redefine South Asian fashion for a global generation not as nostalgia, but as living identity.",
       "We don't just make clothing.",
     ],
     bullets: [],
@@ -104,7 +104,7 @@ export default function DiscoverPage() {
         </span>
 
         <h1 style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "'Figtree', serif",
           fontSize: isMobile ? "36px" : "clamp(36px, 5vw, 64px)",
           fontWeight: 300,
           color: "#0F0F0E",
@@ -121,7 +121,7 @@ export default function DiscoverPage() {
           lineHeight: "1.9",
           margin: "0 auto 48px",
         }}>
-          Masafir was born from a love of journeys — the places we go,
+          Masafir was born from a love of journeys the places we go,
           the people we meet, and the stories we carry back.
           Every piece is designed to move with you.
         </p>
@@ -182,7 +182,7 @@ export default function DiscoverPage() {
                 </span>
 
                 <h2 style={{
-                  fontFamily: "'Cormorant Garamond', serif",
+                  fontFamily: "'Figtree', serif",
                   fontSize: isMobile ? "28px" : "clamp(24px, 2.8vw, 36px)",
                   fontWeight: 300,
                   color: "#0F0F0E",
@@ -270,23 +270,22 @@ export default function DiscoverPage() {
           fontSize: "10px",
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "#9E7D52",
+          color: "#ffffff",
           display: "block",
           marginBottom: "16px",
         }}>
-          ✦ Wear The Journey ✦
+          ✦ Heritage in Every Thread ✦
         </span>
 
         <p style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "'Figtree', serif",
           fontSize: isMobile ? "22px" : "clamp(18px, 2.5vw, 28px)",
           fontWeight: 300,
           color: "#FDFBF7",
           margin: "0 0 36px",
           lineHeight: 1.5,
         }}>
-          Because you are not standing still —<br />
-          and neither is what you wear.
+          Where South Asian roots meet modern identity.
         </p>
 
         <Link

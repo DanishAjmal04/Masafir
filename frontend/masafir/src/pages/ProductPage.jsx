@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ArrowLeft, ArrowRight, Minus, Plus, Share2, ChevronDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Minus, Plus, ChevronDown } from "lucide-react";
 import { addToCart } from "../store/cartSlice.js";
-import { useProduct } from "../hooks/useProduct";        // ✅ fix
+import { useProduct } from "../hooks/useProduct";
 import { reviewService } from "../services/reviewService";
 
 const formatPKR = (amount) =>
@@ -26,9 +26,10 @@ function useIsMobile(bp = 768) {
 }
 
 export default function ProductPage() {
-  const { slug }   = useParams();
-  const dispatch   = useDispatch();
-  const isMobile   = useIsMobile();
+  const { slug }    = useParams();
+  const dispatch    = useDispatch();
+  const navigate    = useNavigate();
+  const isMobile    = useIsMobile();
   const { product, loading, error } = useProduct(slug);
 
   const [activeImage,   setActiveImage]   = useState(0);
@@ -39,10 +40,9 @@ export default function ProductPage() {
   const [sizeError,     setSizeError]     = useState(false);
   const [openAccordion, setOpenAccordion] = useState(null);
 
-  const sizes  = [...new Set(product?.variants?.map((v) => v.size)                || [])];
+  const sizes  = [...new Set(product?.variants?.map((v) => v.size)                 || [])];
   const colors = [...new Set(product?.variants?.map((v) => v.color).filter(Boolean) || [])];
 
-  // ✅ fix — Django images array of objects hai, strings nahi
   const images = product?.images?.map((img) =>
     typeof img === "string" ? img : img.image
   ).filter(Boolean) || [];
@@ -72,6 +72,24 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const handleBuyNow = () => {
+    if (!selectedSize) {
+      setSizeError(true);
+      setTimeout(() => setSizeError(false), 2000);
+      return;
+    }
+    dispatch(addToCart({
+      id:       product.id,
+      name:     product.name,
+      price:    parseFloat(product.price),
+      image:    images[0] || "",
+      size:     selectedSize,
+      color:    selectedColor || "",
+      quantity,
+    }));
+    navigate("/checkout");
+  };
+
   if (loading) {
     return (
       <div style={{ minHeight: "100vh", backgroundColor: "#faf9f6", paddingTop: "96px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -91,9 +109,9 @@ export default function ProductPage() {
     );
   }
 
-  const avgRating    = product.avg_rating    || "0.0";
-  const reviewCount  = product.review_count  || 0;
-  const totalImages  = images.length         || 1;
+  const avgRating    = product.avg_rating   || "0.0";
+  const reviewCount  = product.review_count || 0;
+  const totalImages  = images.length        || 1;
   const categoryName = typeof product.category === "object"
     ? product.category?.name
     : product.category || "";
@@ -237,23 +255,11 @@ export default function ProductPage() {
                     {sizeError ? "Please select a size" : "Size"}
                   </p>
                   <Link
-  to="/size-guide"
-  style={{
-    fontSize: "11px",
-    color: "#4d4d4d",
-    textDecoration: "underline",
-    textUnderlineOffset: "2px",
-    fontWeight: 300,
-    border: "none",
-    backgroundColor: "transparent",
-    cursor: "pointer",
-    borderRadius: RADIUS.sm,
-    padding: "4px 8px",
-    fontFamily: "'Figtree', sans-serif",
-  }}
->
-  Size Guide
-</Link>
+                    to="/size-guide"
+                    style={{ fontSize: "11px", color: "#4d4d4d", textDecoration: "underline", textUnderlineOffset: "2px", fontWeight: 300, border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "4px 8px", fontFamily: "'Figtree', sans-serif" }}
+                  >
+                    Size Guide
+                  </Link>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {sizes.map((size) => {
@@ -273,7 +279,7 @@ export default function ProductPage() {
             )}
 
             {/* Qty + Add to Cart */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "12px" }}>
               <div style={{ display: "flex", alignItems: "center", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, overflow: "hidden", flexShrink: 0 }}>
                 <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}
                   style={{ width: isMobile ? "36px" : "40px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", border: "none", backgroundColor: "transparent", cursor: "pointer", color: "#4d4d4d", opacity: quantity <= 1 ? 0.3 : 1 }}>
@@ -292,11 +298,17 @@ export default function ProductPage() {
                 style={{ flex: 1, padding: "12px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif" }}>
                 {added ? "✦ Added to Cart" : "Add to Cart"}
               </button>
-
-              <button style={{ width: "48px", height: "48px", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#4d4d4d", flexShrink: 0 }}>
-                <Share2 size={14} />
-              </button>
             </div>
+
+            {/* Buy Now */}
+            <button
+              onClick={handleBuyNow}
+              style={{ width: "100%", padding: "14px", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 300, border: "1px solid #1a1a1a", borderRadius: RADIUS.md, cursor: "pointer", backgroundColor: "transparent", color: "#1a1a1a", fontFamily: "'Figtree', sans-serif", marginBottom: "16px", transition: "all 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a1a1a"; e.currentTarget.style.color = "#faf9f6"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a1a1a"; }}
+            >
+              Buy Now
+            </button>
 
             <p style={{ fontSize: "11px", color: "#4d4d4d", fontWeight: 300, marginBottom: "28px", fontFamily: "'Figtree', sans-serif" }}>
               Free shipping on orders over PKR 5,000
@@ -305,14 +317,14 @@ export default function ProductPage() {
             {/* Accordions */}
             <div style={{ borderTop: "1px solid #ede8df" }}>
               {[
-                { key: "details",  label: "Product Details",   content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, lineHeight: 1.8, fontFamily: "'Figtree', sans-serif" }}>{product.description}</p> },
-                { key: "shipping", label: "Shipping & Returns", content: (
+                { key: "details",  label: "Product Details",    content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, lineHeight: 1.8, fontFamily: "'Figtree', sans-serif" }}>{product.description}</p> },
+                { key: "shipping", label: "Shipping & Returns",  content: (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Free standard shipping on orders over PKR 5,000. Delivery within 3–5 working days across Pakistan.</p>
                     <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Returns accepted within 14 days of delivery. Items must be unworn and in original packaging.</p>
                   </div>
                 )},
-                { key: "care",     label: "Care Instructions",  content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Machine wash cold on a gentle cycle. Do not tumble dry. Line dry in shade. Iron on low heat if needed.</p> },
+                { key: "care",     label: "Care Instructions",   content: <p style={{ fontSize: "13px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Machine wash cold on a gentle cycle. Do not tumble dry. Line dry in shade. Iron on low heat if needed.</p> },
               ].map(({ key, label, content }) => (
                 <div key={key} style={{ borderBottom: "1px solid #ede8df" }}>
                   <button
