@@ -194,7 +194,7 @@ export default function Footer() {
                 onClick={handleSubscribe}
                 disabled={status === "loading"}
                 style={{
-                  background:  status === "success" ? "#4ade80" : "#C4A882",
+                  background:  status === "success" ? "#4ade80" : "#ffffff",
                   border:      "none",
                   color:       "#0F0F0E",
                   padding:     "12px 16px",
