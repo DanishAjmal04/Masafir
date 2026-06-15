@@ -263,9 +263,16 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <Link to="/shop" style={styles.viewAll}>
-              View All <ArrowRight size={12} />
-            </Link>
+            <Link
+  to="/shop"
+  style={{
+    ...styles.viewAll,
+    textDecoration: "underline",
+    textDecorationColor: "black",
+  }}
+>
+  View All <ArrowRight size={12} />
+</Link>
           </div>
 
           {featured.length === 0 ? (
