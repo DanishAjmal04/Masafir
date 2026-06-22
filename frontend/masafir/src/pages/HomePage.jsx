@@ -8,7 +8,7 @@ import heroVideo from "../assets/car.mp4";
 import storyBg from "../assets/3.jpg";
 const videoURL="https://res.cloudinary.com/dyzzdnqs8/video/upload/q_auto/f_auto/v1778841953/car_cdeuav.mp4"
 const marqueeItems = [
-  "Luxury Fabrics",
+  "Limited Stock",
   "Crafted in پـــاکــستان",
   "Free Shipping Over PKR 5,000",
 ];
@@ -79,6 +79,9 @@ const styles = {
 };
 
 function MarqueeBar() {
+  // 6 copies = teen-teen ka do half, taake content kaafi lamba ho aur gap na bane
+  const copies = Array.from({ length: 6 });
+
   return (
     <div
       style={{
@@ -92,15 +95,13 @@ function MarqueeBar() {
     >
       <div
         style={{
-          display: "flex",
+          display: "inline-flex",
           whiteSpace: "nowrap",
-          width: "max-content",
-          animation: "marquee-scroll 25s linear infinite",
+          animation: "marquee-scroll 18s linear infinite",
         }}
       >
-        {/* Do identical copies — taake -50% pe seamlessly loop ho */}
-        {[0, 1].map((copyIndex) => (
-          <div key={copyIndex} style={{ display: "flex", flexShrink: 0 }}>
+        {copies.map((_, copyIndex) => (
+          <div key={copyIndex} style={{ display: "inline-flex", flexShrink: 0 }}>
             {marqueeItems.map((item, i) => (
               <span
                 key={`${copyIndex}-${item}-${i}`}
@@ -114,6 +115,7 @@ function MarqueeBar() {
                   display: "inline-flex",
                   alignItems: "center",
                   whiteSpace: "nowrap",
+                  flexShrink: 0,
                 }}
               >
                 {item}
@@ -126,12 +128,8 @@ function MarqueeBar() {
 
       <style>{`
         @keyframes marquee-scroll {
-          from {
-            transform: translateX(0%);
-          }
-          to {
-            transform: translateX(-50%);
-          }
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
         }
       `}</style>
     </div>
