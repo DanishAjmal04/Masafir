@@ -20,8 +20,8 @@ class ProductReviewListView(generics.ListAPIView):
 
 
 class ReviewCreateView(APIView):
-    """POST /api/reviews/<product_slug>/create/ — login zaroori"""
-    permission_classes = [permissions.IsAuthenticated]
+    """POST /api/reviews/<product_slug>/create/ — login required nahi, guest bhi review de sakte hain"""
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request, slug):
         try:
@@ -40,7 +40,7 @@ class ReviewCreateView(APIView):
 
 
 class ReviewUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """PUT/DELETE /api/reviews/<id>/  — sirf apni review"""
+    """PUT/DELETE /api/reviews/<id>/  — sirf apni review (login required)"""
     serializer_class   = ReviewCreateSerializer
     permission_classes = [permissions.IsAuthenticated]
 
