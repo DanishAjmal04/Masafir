@@ -5,7 +5,7 @@ import api from "../services/api";
 
 const LINKS = {
   Shop: [
-    { label: "Volume-1", to: "/shop/" },
+    { label: "Volume-1", to: "/shop" },
     { label: "Collections",  to: "/shop/collections" },
   ],
   Help: [
