@@ -459,7 +459,7 @@ function ProductCard({
         <p
           style={{
             fontSize: isMobile ? 11 : 12,
-            color: "#9b7d57",
+            color: "#111111",
             letterSpacing: "0.03em",
             margin: 0,
             fontWeight: 600,

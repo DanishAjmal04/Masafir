@@ -216,7 +216,7 @@ export default function ProductPage() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
               <div style={{ display: "flex", gap: "2px" }}>
                 {[1,2,3,4,5].map((s) => (
-                  <span key={s} style={{ fontSize: "13px", color: s <= Math.round(avgRating) ? "#b89870" : "#e0d9ce" }}>★</span>
+                  <span key={s} style={{ fontSize: "13px", color: s <= Math.round(avgRating) ? "#111111" : "#e0d9ce" }}>★</span>
                 ))}
               </div>
               <span style={{ fontSize: "11px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>{avgRating} ({reviewCount} reviews)</span>
@@ -298,7 +298,7 @@ export default function ProductPage() {
 
   {/* Add to Cart */}
   <button onClick={handleAddToCart}
-    style={{ width: "110px", height: "48px", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 400, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#b89870" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif", flexShrink: 0 }}>
+    style={{ width: "110px", height: "48px", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 400, border: "none", borderRadius: RADIUS.md, cursor: "pointer", transition: "all 0.3s", backgroundColor: added ? "#111111" : "#1a1a1a", color: "#faf9f6", fontFamily: "'Figtree', sans-serif", flexShrink: 0 }}>
     {added ? "✦ Added" : "Add to Cart"}
   </button>
 
@@ -368,7 +368,7 @@ function RelatedProducts({ currentId, gender }) {
     <div style={{ marginTop: "64px", paddingTop: "48px", borderTop: "1px solid #ede8df" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: isMobile ? "24px" : "36px" }}>
         <div>
-          <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif" }}>You May Also Like</p>
+          <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif",color: '#111111' }}>You May Also Like</p>
           <h2 className="font-display" style={{ fontSize: isMobile ? "22px" : "28px", color: "#1a1a1a", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Related Pieces</h2>
         </div>
         <Link to="/shop" style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#1a1a1a", textDecoration: "none", fontFamily: "'Figtree', sans-serif" }}>View All →</Link>
@@ -389,6 +389,7 @@ function RelatedProducts({ currentId, gender }) {
 }
 
 /* ── Reviews Section ── */
+/* ── Reviews Section ── */
 function ReviewsSection({ productSlug, avgRating, reviewCount }) {
   const isMobile = useIsMobile();
   const { isAuthenticated } = useSelector((s) => s.auth);
@@ -397,9 +398,11 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
   const [showForm,    setShowForm]    = useState(false);
   const [newRating,   setNewRating]   = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [formData,    setFormData]    = useState({ body: "" });
+  const [formData,    setFormData]    = useState({ name: "", body: "" });
   const [submitted,   setSubmitted]   = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [nameError,   setNameError]   = useState(false);
+  const [ratingError, setRatingError] = useState(false);
 
   useEffect(() => {
     if (!productSlug) return;
@@ -411,14 +414,31 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.body || !newRating) return;
+
+    if (!isAuthenticated && !formData.name.trim()) {
+      setNameError(true);
+      setTimeout(() => setNameError(false), 2000);
+      return;
+    }
+    if (!newRating) {
+      setRatingError(true);
+      setTimeout(() => setRatingError(false), 2000);
+      return;
+    }
+    if (!formData.body.trim()) return;
+
     setSubmitError("");
     try {
-      const review = await reviewService.createReview(productSlug, { rating: newRating, body: formData.body });
+      const payload = {
+        rating: newRating,
+        body:   formData.body,
+        ...(!isAuthenticated && { name: formData.name.trim() }),
+      };
+      const review = await reviewService.createReview(productSlug, payload);
       setReviews((prev) => [review, ...prev]);
       setSubmitted(true);
       setShowForm(false);
-      setFormData({ body: "" });
+      setFormData({ name: "", body: "" });
       setNewRating(0);
     } catch (err) {
       setSubmitError(err.response?.data?.detail || "Failed to submit review.");
@@ -429,13 +449,13 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
     <div style={{ marginTop: "64px", paddingTop: "48px", borderTop: "1px solid #ede8df" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "12px" : 0, marginBottom: isMobile ? "24px" : "40px" }}>
         <div>
-          <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif" }}>What they say</p>
+          <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif",color: '#111111' }}>What they say</p>
           <h2 className="font-display" style={{ fontSize: isMobile ? "22px" : "28px", color: "#1a1a1a", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Customer Reviews</h2>
         </div>
         <div style={{ textAlign: isMobile ? "left" : "right" }}>
           <div style={{ display: "flex", gap: "2px", marginBottom: "4px" }}>
             {[1,2,3,4,5].map((s) => (
-              <span key={s} style={{ fontSize: "16px", color: s <= Math.round(avgRating) ? "#b89870" : "#e0d9ce" }}>★</span>
+              <span key={s} style={{ fontSize: "16px", color: s <= Math.round(avgRating) ? "#111111" : "#e0d9ce" }}>★</span>
             ))}
           </div>
           <p style={{ fontSize: "11px", color: "#4d4d4d", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>{avgRating} out of 5 · {reviewCount} reviews</p>
@@ -450,7 +470,7 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
             <div key={review.id} style={{ border: "1px solid #ede8df", backgroundColor: "#faf9f6", padding: isMobile ? "16px" : "22px", borderRadius: RADIUS.lg }}>
               <div style={{ display: "flex", gap: "2px", marginBottom: "10px" }}>
                 {[1,2,3,4,5].map((s) => (
-                  <span key={s} style={{ fontSize: "12px", color: s <= review.rating ? "#b89870" : "#e0d9ce" }}>★</span>
+                  <span key={s} style={{ fontSize: "12px", color: s <= review.rating ? "#111111" : "#e0d9ce" }}>★</span>
                 ))}
               </div>
               <p style={{ fontSize: "13px", color: "#3a3a3a", fontWeight: 300, lineHeight: 1.7, marginBottom: "14px", fontFamily: "'Figtree', sans-serif" }}>"{review.body}"</p>
@@ -475,11 +495,7 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
         </div>
       )}
 
-      {!isAuthenticated ? (
-        <Link to="/login" style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#1a1a1a", border: "1px solid #1a1a1a", borderRadius: RADIUS.md, padding: "12px 24px", textDecoration: "none", display: "inline-block", fontFamily: "'Figtree', sans-serif" }}>
-          Login to Write a Review
-        </Link>
-      ) : !showForm ? (
+      {!showForm ? (
         <button onClick={() => setShowForm(true)} className="btn-outline" style={{ fontSize: "11px", letterSpacing: "0.15em", borderRadius: RADIUS.md, fontFamily: "'Figtree', sans-serif" }}>
           Write a Review
         </button>
@@ -489,15 +505,32 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
 
           {submitError && <p style={{ fontSize: "12px", color: "#ef4444", marginBottom: "14px", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>{submitError}</p>}
 
+          {!isAuthenticated && (
+            <div style={{ marginBottom: "18px" }}>
+              <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: nameError ? "#ef4444" : "#4d4d4d", marginBottom: "8px", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>
+                {nameError ? "Please enter your name" : "Your Name"}
+              </p>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                placeholder="e.g. Ayesha Khan"
+                style={{ width: "100%", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "#faf9f6", padding: "12px 16px", fontSize: "13px", color: "#1a1a1a", outline: "none", fontWeight: 300, boxSizing: "border-box", fontFamily: "'Figtree', sans-serif" }}
+              />
+            </div>
+          )}
+
           <div style={{ marginBottom: "18px" }}>
-            <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#4d4d4d", marginBottom: "10px", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Your Rating</p>
+            <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: ratingError ? "#ef4444" : "#4d4d4d", marginBottom: "10px", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>
+              {ratingError ? "Please select a rating" : "Your Rating"}
+            </p>
             <div style={{ display: "flex", gap: "4px" }}>
               {[1,2,3,4,5].map((s) => (
                 <button type="button" key={s}
                   onMouseEnter={() => setHoverRating(s)}
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setNewRating(s)}
-                  style={{ fontSize: "28px", color: s <= (hoverRating || newRating) ? "#b89870" : "#e0d9ce", border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "0 2px" }}>
+                  style={{ fontSize: "28px", color: s <= (hoverRating || newRating) ? "#111111" : "#e0d9ce", border: "none", backgroundColor: "transparent", cursor: "pointer", borderRadius: RADIUS.sm, padding: "0 2px" }}>
                   ★
                 </button>
               ))}
@@ -506,7 +539,7 @@ function ReviewsSection({ productSlug, avgRating, reviewCount }) {
 
           <div style={{ marginBottom: "20px" }}>
             <p style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#4d4d4d", marginBottom: "8px", fontWeight: 300, fontFamily: "'Figtree', sans-serif" }}>Your Review</p>
-            <textarea rows={4} value={formData.body} onChange={(e) => setFormData({ body: e.target.value })} placeholder="Share your experience..."
+            <textarea rows={4} value={formData.body} onChange={(e) => setFormData((p) => ({ ...p, body: e.target.value }))} placeholder="Share your experience..."
               style={{ width: "100%", border: "1px solid #e0d9ce", borderRadius: RADIUS.md, backgroundColor: "#faf9f6", padding: "12px 16px", fontSize: "13px", color: "#1a1a1a", outline: "none", resize: "none", fontWeight: 300, boxSizing: "border-box", fontFamily: "'Figtree', sans-serif" }} />
           </div>
 
