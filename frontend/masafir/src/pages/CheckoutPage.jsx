@@ -121,7 +121,7 @@ const s = {
     fontSize: "10px",
     letterSpacing: "0.12em",
     textTransform: "uppercase",
-    color: done ? "#111111" : active ? "#0F0F0E" : "#C4B8A8",
+    color: done ? "#111111" : active ? "#0F0F0E" : "#111111",
     fontWeight: active ? 500 : 300,
     whiteSpace: "nowrap",
   }),
@@ -136,7 +136,7 @@ const s = {
     fontSize: "10px",
     flexShrink: 0,
     background: done ? "#0F0F0E" : active ? "#0F0F0E" : "none",
-    color: done || active ? "#FDFBF7" : "#C4B8A8",
+    color: done || active ? "#FDFBF7" : "#111111",
     border: done || active ? "none" : "1px solid #111111",
   }),
 
