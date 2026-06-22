@@ -8,7 +8,6 @@ import heroVideo from "../assets/car.mp4";
 import storyBg from "../assets/3.jpg";
 const videoURL="https://res.cloudinary.com/dyzzdnqs8/video/upload/q_auto/f_auto/v1778841953/car_cdeuav.mp4"
 const marqueeItems = [
-  "Limited Stock",
   "Luxury Fabrics",
   "Crafted in پـــاکــستان",
   "Free Shipping Over PKR 5,000",
@@ -88,26 +87,53 @@ function MarqueeBar() {
         padding: "14px 0",
         overflow: "hidden",
         width: "100%",
+        position: "relative",
       }}
     >
-      <div className="animate-marquee" style={{ display: "flex", whiteSpace: "nowrap" }}>
-        {[...marqueeItems, ...marqueeItems].map((item, i) => (
-          <span
-            key={`${item}-${i}`}
-            style={{
-              color: "rgba(250,249,246,.78)",
-              fontSize: 11,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              margin: "0 22px",
-              fontFamily: "'Figtree', sans-serif",
-            }}
-          >
-            {item}
-            <span style={{ color: "#b59a76", margin: "0 12px" }}>✦</span>
-          </span>
+      <div
+        style={{
+          display: "flex",
+          whiteSpace: "nowrap",
+          width: "max-content",
+          animation: "marquee-scroll 25s linear infinite",
+        }}
+      >
+        {/* Do identical copies — taake -50% pe seamlessly loop ho */}
+        {[0, 1].map((copyIndex) => (
+          <div key={copyIndex} style={{ display: "flex", flexShrink: 0 }}>
+            {marqueeItems.map((item, i) => (
+              <span
+                key={`${copyIndex}-${item}-${i}`}
+                style={{
+                  color: "rgba(250,249,246,.78)",
+                  fontSize: 11,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  margin: "0 22px",
+                  fontFamily: "'Figtree', sans-serif",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {item}
+                <span style={{ color: "#b59a76", margin: "0 12px" }}>✦</span>
+              </span>
+            ))}
+          </div>
         ))}
       </div>
+
+      <style>{`
+        @keyframes marquee-scroll {
+          from {
+            transform: translateX(0%);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </div>
   );
 }
