@@ -74,7 +74,7 @@ const s = {
     fontSize: "11px",
     letterSpacing: "0.15em",
     textTransform: "uppercase",
-    color: "#3A3A36",
+    color: "#111111",
     textDecoration: "none",
     marginBottom: "32px",
   },
@@ -144,7 +144,7 @@ const s = {
     flex: 1,
     minWidth: "40px",
     height: "1px",
-    background: "#E5D5BC",
+    background: "#111111",
     margin: "0 12px",
   },
 
@@ -160,7 +160,7 @@ const s = {
     color: "#0F0F0E",
     marginBottom: "20px",
     paddingBottom: "10px",
-    borderBottom: "1px solid #E5D5BC",
+    borderBottom: "1px solid #111111",
   },
 
   grid2: (isMobile) => ({
@@ -229,7 +229,7 @@ const s = {
     marginBottom: "10px",
     cursor: "pointer",
     borderRadius: "12px",
-    border: `1px solid ${active ? "#0F0F0E" : "#E5D5BC"}`,
+    border: `1px solid ${active ? "#0F0F0E" : "#111111"}`,
     background: active ? "#F9F5EE" : "#FDFBF7",
   }),
 
@@ -307,7 +307,7 @@ const s = {
     width: "52px",
     height: "68px",
     objectFit: "cover",
-    background: "#E5D5BC",
+    background: "#111111",
     borderRadius: "8px",
     flexShrink: 0,
   },
@@ -332,7 +332,7 @@ const s = {
 
   summaryDivider: {
     height: "1px",
-    background: "#E5D5BC",
+    background: "#111111",
     margin: "16px 0",
   },
 
