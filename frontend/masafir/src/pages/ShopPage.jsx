@@ -89,7 +89,7 @@ export default function ShopPage() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#8a7a62",
+              color: "#111111",
               marginBottom: 10,
             }}
           >
@@ -244,7 +244,7 @@ export default function ShopPage() {
                   fontSize: 11,
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  color: "#8a7a62",
+                  color: "#111111",
                   marginBottom: 12,
                   fontFamily: "'Figtree', sans-serif",
                 }}
