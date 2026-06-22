@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from .models import Order, OrderItem, OrderStatusHistory
-from .emails import (
-    send_user_order_confirmed_email,
-    send_admin_new_order_email
-)
 
+# from .emails import (
+#     send_user_order_confirmed_email,
+#     send_admin_new_order_email
+# )
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
