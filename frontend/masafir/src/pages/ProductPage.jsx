@@ -207,7 +207,7 @@ export default function ProductPage() {
 
           {/* PRODUCT INFO */}
           <div>
-            <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif" }}>{categoryName}</p>
+            <p className="section-label" style={{ marginBottom: "10px", fontFamily: "'Figtree', sans-serif",color:'#111111' }}>{categoryName}</p>
             <h1 className="font-display" style={{ fontSize: isMobile ? "28px" : "40px", color: "#1a1a1a", fontWeight: 300, lineHeight: 1.15, marginBottom: "14px", fontFamily: "'Figtree', sans-serif" }}>
               {product.name}
             </h1>

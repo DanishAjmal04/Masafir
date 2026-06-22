@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import sizechart from "../assets/sizechart.jpeg";
+import sizechart from "../assets/sizeguide.jpeg";
 
 export default function SizeGuidePage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);

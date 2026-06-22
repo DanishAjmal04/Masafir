@@ -58,7 +58,7 @@ export default function CartPage() {
           style={{ marginBottom: isMobile ? "20px" : "32px" }}
         >
           <div>
-            <p className="section-label mb-2 text-charcoal-600">Your Selection</p>
+            <p className="section-label mb-2" style={{ color: "#1a1a1a" }}>Your Selection</p>
             <h1
               className="text-charcoal-900"
               style={{ fontSize: isMobile ? "28px" : "42px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}
@@ -153,7 +153,7 @@ export default function CartPage() {
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <Link
                         to={`/product/${item.id}`}
-                        className="text-charcoal-900 hover:text-sand-600 transition-colors duration-200"
+                        className="text-charcoal-900 hover:text-charcoal-700 transition-colors duration-200"
                         style={{ fontSize: isMobile ? "13px" : "14px", fontWeight: 600, lineHeight: 1.4, display: "block" }}
                       >
                         {item.name}
@@ -356,7 +356,7 @@ function EmptyCart() {
         >
           <ShoppingBag size={22} className="text-charcoal-500" strokeWidth={1} />
         </div>
-        <p className="section-label" style={{ marginBottom: "12px" }}>Nothing here yet</p>
+        <p className="section-label" style={{ marginBottom: "12px", color: "#1a1a1a" }}>Nothing here yet</p>
         <h2
           className="text-charcoal-900"
           style={{ fontSize: isMobile ? "26px" : "34px", marginBottom: "16px", fontFamily: "'Figtree', sans-serif", fontWeight: 300 }}
