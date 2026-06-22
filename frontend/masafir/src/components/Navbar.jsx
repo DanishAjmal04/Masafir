@@ -190,7 +190,7 @@ export default function Navbar() {
           }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {[
-                { label: 'Shop',    to: '/shop'    },
+                { label: 'Volume 1',    to: '/shop'    },
                 { label: 'Men',    to: '/shop' },
                 { label: 'Women',  to: '/shop' },
               ].map(({ label, to }, i, arr) => (
