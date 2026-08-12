@@ -9,15 +9,14 @@ Built with a React and Vite frontend and a Django backend, Masafir offers a scal
 ## Screenshots
 
 <div align="center">
-  <img src="image_project/assets/img1.png" alt="Home Page" width="800" />
+  <img src="assets/img1.png" alt="Home Page" width="800" />
+  <img src="assets/img2.png" alt="Home Page" width="800" />
+  <img src="assets/img3.png" alt="Home Page" width="800" />
+  <img src="assets/img4.png" alt="Home Page" width="800" />
+  <img src="assets/img5.png" alt="Home Page" width="800" />
+  <img src="assets/img6.png" alt="Home Page" width="800" />
+  <img src="assets/img7.png" alt="Home Page" width="800" />
 
-  <img src="image_project/assets/img2.png" alt="Upload Interface" width="800" />
-
-  <img src="image_project/assets/img3.png" alt="Colorized Result" width="800" />
-
-  <img src="image_project/assets/img4.png" alt="Dashboard" width="800" />
-  
-  <img src="image_project/assets/img5.png" alt="Dashboard" width="800" />
 </div>
 
 ## Key Features
@@ -39,6 +38,11 @@ Built with a React and Vite frontend and a Django backend, Masafir offers a scal
 **Media Storage:** Cloudinary  
 **Styling:** Custom CSS and modern design system
 
-## License
+## 📬 Contact & Support
 
-This project is licensed under the MIT License.
+🔗 **GitHub:** [DanishAjmal04](https://github.com/DanishAjmal04)
+📧 **Email:** danishajmal56da@gmail.com
+
+⭐ If you like this project, consider giving it a star on GitHub! ⭐
+
+---
