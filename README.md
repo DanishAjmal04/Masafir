@@ -8,14 +8,17 @@ Built with a React and Vite frontend and a Django backend, Masafir offers a scal
 
 ## Screenshots
 
-<!-- Add your screenshots below -->
-| Home Page | Product Page |
-|-----------|--------------|
-| ![Home](./screenshots/home.png) | ![Product](./screenshots/product.png) |
+<div align="center">
+  <img src="image_project/assets/img1.png" alt="Home Page" width="800" />
 
-| Cart | Checkout |
-|------|----------|
-| ![Cart](./screenshots/cart.png) | ![Checkout](./screenshots/checkout.png) |
+  <img src="image_project/assets/img2.png" alt="Upload Interface" width="800" />
+
+  <img src="image_project/assets/img3.png" alt="Colorized Result" width="800" />
+
+  <img src="image_project/assets/img4.png" alt="Dashboard" width="800" />
+  
+  <img src="image_project/assets/img5.png" alt="Dashboard" width="800" />
+</div>
 
 ## Key Features
 
